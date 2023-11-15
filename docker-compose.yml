@@ -1,0 +1,60 @@
+version: '3'
+services:
+  mysqldb:
+    image: mysql:5.7
+    container_name: mysqldb
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./backend/init.sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - symfony_net
+      # - springboot_net
+
+  springboot:
+    build:
+      context: ./backend/springboot
+    container_name: springboot
+    ports:
+      - "7800:7800"
+    volumes:
+      - ./backend/springboot:/app
+    depends_on:
+      - symfony
+    command: sh -c "sleep 30 && mvn spring-boot:run"
+    networks:
+      # - springboot_net
+      - symfony_net
+
+  vue:
+    build:
+      context: ./frontend/vue
+    container_name: vue
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./frontend/vue:/app
+    depends_on:
+      - mysqldb
+
+  symfony:
+    build:
+      context: ./backend/symfony
+      dockerfile: Dockerfile
+    container_name: symfony
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/symfony:/var/www/html
+    depends_on:
+      - mysqldb
+    # command: sh -c "sleep 30 && php bin/console doctrine:migrations:migrate --no-interaction && symfony server:start"
+    command: sh -c "sleep 30 && symfony server:start"
+    networks:
+      - symfony_net
+
+networks:
+  symfony_net:
+  # springboot_net:
