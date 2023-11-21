@@ -28,19 +28,9 @@ class Restaurant
     #[ORM\OneToMany(targetEntity: Tables::class, mappedBy: 'tables')]
     private Collection $tables;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Categories", inversedBy="restaurants")
-     * @ORM\JoinTable(name="rest_cat",
-     *   joinColumns={@ORM\JoinColumn(name="id_rest", referencedColumnName="id_rest")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="id_cat", referencedColumnName="id_cat")}
-     * )
-     */
-    private $categories;
-
     public function __construct()
     {
         $this->tables = new ArrayCollection();
-        $this->categories = new ArrayCollection();
     }
 
     public function getIdRest(): ?int
@@ -90,15 +80,6 @@ class Restaurant
     public function getTables(): Collection
     {
         return $this->tables;
-    }
-
-
-    /**
-     * @return Collection|Categories[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
     }
 
     public function toArray(): array
