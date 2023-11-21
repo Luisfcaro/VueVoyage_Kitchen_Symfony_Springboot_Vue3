@@ -16,7 +16,7 @@ class Tables
 
     #[ORM\Column]
     private ?int $num_table = null;
-    
+
     #[ORM\Column]
     private ?int $id_rest = null;
 
@@ -25,6 +25,27 @@ class Tables
 
     #[ORM\Column(length: 50)]
     private ?string $status_table = null;
+
+    // /**
+    //  * @ORM\ManyToOne(targetEntity="App\Entity\Restaurant", inversedBy="tables")
+    //  * @ORM\JoinColumn(name="id_rest", referencedColumnName="id_rest")
+    //  */
+
+    #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'restaurant')]
+    private Restaurant $restaurant;
+
+    public function getRestaurant(): ?Restaurant
+    {
+        return $this->restaurant;
+    }
+
+    public function setRestaurant(?Restaurant $restaurant): self
+    {
+        $this->restaurant = $restaurant;
+
+        return $this;
+    }
+
 
     public function getIdTable(): ?int
     {
@@ -42,7 +63,7 @@ class Tables
 
         return $this;
     }
-    
+
     public function getIdRest(): ?int
     {
         return $this->id_rest;
@@ -77,5 +98,19 @@ class Tables
         $this->status_table = $status_table;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id_table' => $this->getIdTable(),
+            'num_table' => $this->getNumTable(),
+            'id_rest' => $this->getIdRest(),
+            'capacity_table' => $this->getCapacityTable(),
+            'status_table' => $this->getStatusTable(),
+        ];
     }
 }

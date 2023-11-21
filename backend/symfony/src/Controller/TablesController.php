@@ -23,13 +23,7 @@ class TablesController extends AbstractController
 
             $data = [];
             foreach ($tables as $table) {
-                $data[] = [
-                    'id_table' => $table->getIdTable(),
-                    'number_table' => $table->getNumTable(),
-                    'id_rest' => $table->getIdRest(),
-                    'capacity_table' => $table->getCapacityTable(),
-                    'status_table' => $table->getStatusTable()
-                ];
+                $data[] = $table->toArray();
             }
 
             return new JsonResponse($data, 200);
@@ -51,13 +45,8 @@ class TablesController extends AbstractController
             if (!$table instanceof Tables) {
                 throw new \Exception('No se ha encontrado una mesa con el id: ' . $id);
             }
-            $data = [
-                'id_table' => $table->getIdTable(),
-                'number_table' => $table->getNumTable(),
-                'id_rest' => $table->getIdRest(),
-                'capacity_table' => $table->getCapacityTable(),
-                'status_table' => $table->getStatusTable()
-            ];
+            $data = $table->toArray();
+
             return new JsonResponse($data, 200);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Error al obtener los detalles de la mesa'], 404);
@@ -81,13 +70,7 @@ class TablesController extends AbstractController
             return new JsonResponse([
                 "message" => "Mesa creada correctamente.",
                 "code" => 201,
-                "table" => [
-                    'id_table' => $table->getIdTable(),
-                    'number_table' => $table->getNumTable(),
-                    'id_rest' => $table->getIdRest(),
-                    'capacity_table' => $table->getCapacityTable(),
-                    'status_table' => $table->getStatusTable()
-                ]
+                "table" => $table->toArray()
             ], 201);
         } catch (\Exception $exception) {
             return new JsonResponse(['error' => 'Error al crear la mesa'], 409);
@@ -119,13 +102,7 @@ class TablesController extends AbstractController
             return new JsonResponse([
                 'message' => 'Mesa actualizada correctamente.',
                 'code' => 200,
-                "table" => [
-                    'id_table' => $table->getIdTable(),
-                    'number_table' => $table->getNumTable(),
-                    'id_rest' => $table->getIdRest(),
-                    'capacity_table' => $table->getCapacityTable(),
-                    'status_table' => $table->getStatusTable()
-                ]
+                "table" => $table->toArray()
             ], 200);
         } catch (\Exception $exception) {
             return new JsonResponse(['error' => 'Error al actualizar la mesa.'], 500);
