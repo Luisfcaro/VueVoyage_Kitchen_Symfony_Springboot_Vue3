@@ -26,27 +26,6 @@ class Tables
     #[ORM\Column(length: 50)]
     private ?string $status_table = null;
 
-    // /**
-    //  * @ORM\ManyToOne(targetEntity="App\Entity\Restaurant", inversedBy="tables")
-    //  * @ORM\JoinColumn(name="id_rest", referencedColumnName="id_rest")
-    //  */
-
-    #[ORM\ManyToOne(targetEntity: Restaurant::class, inversedBy: 'restaurant')]
-    private Restaurant $restaurant;
-
-    public function getRestaurant(): ?Restaurant
-    {
-        return $this->restaurant;
-    }
-
-    public function setRestaurant(?Restaurant $restaurant): self
-    {
-        $this->restaurant = $restaurant;
-
-        return $this;
-    }
-
-
     public function getIdTable(): ?int
     {
         return $this->id_table;

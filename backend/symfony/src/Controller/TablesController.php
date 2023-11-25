@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Tables;
+use App\Repository\TablesRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,11 +16,10 @@ class TablesController extends AbstractController
     /**
      * @Route("/tables", name="tables", methods={"GET"})
      */
-    public function index(ManagerRegistry $doctrine): Response
+    public function index(TablesRepository $tablesRepository): Response
     {
         try {
-            $repository = $doctrine->getManager()->getRepository(Tables::class);
-            $tables = $repository->findAll();
+            $tables = $tablesRepository->findAll();
 
             $data = [];
             foreach ($tables as $table) {
@@ -35,13 +35,11 @@ class TablesController extends AbstractController
     /**
      * @Route("/table/{id}", name="tables_show", methods={"GET"})
      */
-    public function show(int $id, ManagerRegistry $doctrine): Response
+    public function show(int $id, TablesRepository $tablesRepository): Response
     {
         try {
-            $repository = $doctrine->getManager()->getRepository(Tables::class);
-            $table = $repository->findOneBy([
-                'id_table' => $id
-            ]);
+            $table = $tablesRepository->find($id);
+
             if (!$table instanceof Tables) {
                 throw new \Exception('No se ha encontrado una mesa con el id: ' . $id);
             }
@@ -63,6 +61,7 @@ class TablesController extends AbstractController
             $entityManager = $doctrine->getManager();
             $table = new Tables();
             $table->setNumTable($jsonData->number_table);
+            $table->setIdRest($jsonData->id_rest);
             $table->setCapacityTable($jsonData->capacity_table);
             $table->setStatusTable($jsonData->status_table);
             $entityManager->persist($table);
@@ -80,12 +79,11 @@ class TablesController extends AbstractController
     /**
      * @Route("/table/{id}", name="update_table", methods={"PUT"})
      */
-    public function update(Request $request, ManagerRegistry $doctrine, int $id): Response
+    public function update(Request $request, ManagerRegistry $doctrine, TablesRepository $tablesRepository, int $id): Response
     {
         try {
             $entityManager = $doctrine->getManager();
-            $repository = $entityManager->getRepository(Tables::class);
-            $table = $repository->find($id);
+            $table = $tablesRepository->find($id);
 
             if (!$table) {
                 return new JsonResponse(['error' => 'Mesa no encontrada.'], 404);
@@ -112,12 +110,11 @@ class TablesController extends AbstractController
     /**
      * @Route("/table/{id}", name="delete_table", methods={"DELETE"})
      */
-    public function delete(ManagerRegistry $doctrine, $id): Response
+    public function delete(ManagerRegistry $doctrine, TablesRepository $tablesRepository, $id): Response
     {
         try {
             $entityManager = $doctrine->getManager();
-            $repository = $entityManager->getRepository(Tables::class);
-            $table = $repository->find($id);
+            $table = $tablesRepository->find($id);
 
             if (!$table) {
                 return new JsonResponse(['error' => 'Mesa no encontrada.'], 404);

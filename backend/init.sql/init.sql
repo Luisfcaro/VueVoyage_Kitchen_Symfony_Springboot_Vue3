@@ -6,7 +6,7 @@ USE VueVoyage;
 
 CREATE TABLE
     restaurant (
-        id_rest INT PRIMARY KEY AUTO_INCREMENT,
+        id INT PRIMARY KEY AUTO_INCREMENT,
         name_rest VARCHAR(255),
         img_rest VARCHAR(255),
         location_rest VARCHAR(255)
@@ -14,18 +14,18 @@ CREATE TABLE
 
 CREATE TABLE
     categories (
-        id_cat INT PRIMARY KEY AUTO_INCREMENT,
+        id INT PRIMARY KEY AUTO_INCREMENT,
         name_cat VARCHAR(255),
         img_cat VARCHAR(255)
     );
 
 CREATE TABLE
-    rest_cat (
-        id_rest INT,
-        id_cat INT,
+    restaurant_category (
+        restaurant_id INT,
+        category_id INT,
         desc_rest_cat TEXT,
-        FOREIGN KEY (id_rest) REFERENCES restaurant(id_rest),
-        FOREIGN KEY (id_cat) REFERENCES categories(id_cat)
+        FOREIGN KEY (restaurant_id) REFERENCES restaurant(id),
+        FOREIGN KEY (category_id) REFERENCES categories(id)
     );
 
 CREATE TABLE
@@ -35,14 +35,14 @@ CREATE TABLE
         id_rest INT,
         capacity_table INT,
         status_table VARCHAR(50),
-        FOREIGN KEY (id_rest) REFERENCES restaurant(id_rest)
+        FOREIGN KEY (id_rest) REFERENCES restaurant(id)
     );
 
 -- Insertar datos en la tabla restaurant
 
 INSERT INTO
     restaurant (
-        id_rest,
+        id,
         name_rest,
         img_rest,
         location_rest
@@ -67,7 +67,7 @@ VALUES (
 -- Insertar datos en la tabla categories
 
 INSERT INTO
-    categories (id_cat, name_cat, img_cat)
+    categories (id, name_cat, img_cat)
 VALUES (1, 'Italiana', 'italiana.jpg'), (
         2,
         'Argentina',
@@ -77,7 +77,7 @@ VALUES (1, 'Italiana', 'italiana.jpg'), (
 -- Insertar datos en la tabla rest_cat
 
 INSERT INTO
-    rest_cat (id_rest, id_cat, desc_rest_cat)
+    restaurant_category (restaurant_id, category_id, desc_rest_cat)
 VALUES (
         1,
         1,

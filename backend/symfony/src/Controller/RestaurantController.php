@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Restaurant;
+use App\Entity\Tables;
+use App\Repository\CategoryRepository;
+use App\Repository\RestaurantRepository;
+use App\Repository\TablesRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,11 +20,10 @@ class RestaurantController extends AbstractController
     /**
      * @Route("/restaurants", name="restaurants", methods={"GET"})
      */
-    public function index(ManagerRegistry $doctrine)
+    public function index(RestaurantRepository $restaurantRepository)
     {
         try {
-            $repository = $doctrine->getManager()->getRepository(Restaurant::class);
-            $restaurants = $repository->findAll();
+            $restaurants = $restaurantRepository->findAll();
             $data = [];
             foreach ($restaurants as $restaurant) {
                 $data[] = $restaurant->toArray();
@@ -37,24 +41,24 @@ class RestaurantController extends AbstractController
     /**
      * @Route("/restaurant/{id}", name="restaurant", methods={"GET"})
      */
-    public function show($id, ManagerRegistry $doctrine)
+    public function show($id, RestaurantRepository $restaurantRepository, TablesRepository $tablesRepository)
     {
         try {
-            $repository = $doctrine->getManager()->getRepository(Restaurant::class);
-            $restaurant = $repository->findOneBy(['id_rest' => $id]);
+            $restaurant = $restaurantRepository->find($id);
+
             if (!$restaurant instanceof Restaurant) {
                 throw new \Exception('No se ha encontrado el restaurante');
             }
 
-            // Obtener la información de las mesas del restaurante en forma de array
-            // $mesasDelRestaurante = $restaurant->getTables();
+            $tablesRestaurant = $tablesRepository->findBy(['id_rest' => $restaurant->getIdRest()]);
 
-            // Incluir la información de las mesas directamente en el array $data
             $data = $restaurant->toArray();
-            // $data['tables'] = $mesasDelRestaurante;
+            foreach ($tablesRestaurant as $table) {
+                $data['tables'][] = $table->toArray();
+            }
 
-            // dump(get_class($mesasDelRestaurante));
-            // die();
+            $data['categories'] = $restaurantRepository->findCategoriesOfIdRestaurant($id);
+
 
             return new JsonResponse([
                 "status" => 200,
@@ -93,15 +97,16 @@ class RestaurantController extends AbstractController
     /**
      * @Route("/restaurant/{id}", name="update_restaurant", methods={"PUT"})
      */
-    public function update(int $id, Request $request, ManagerRegistry $doctrine)
+    public function update(int $id, Request $request, ManagerRegistry $doctrine, RestaurantRepository $restaurantRepository)
     {
         try {
             $jsonData = json_decode($request->getContent());
             $entityManager = $doctrine->getManager();
-            $restaurant = $entityManager->getRepository(Restaurant::class)->find($id);
+            $restaurant = $restaurantRepository->find($id);
             if ($restaurant === null) {
                 return new JsonResponse(['error' => 'Restaurante no encontrado.'], 404);
             }
+
             $restaurant->setNameRest($jsonData->name_rest);
             $restaurant->setImgRest($jsonData->img_rest);
             $restaurant->setLocationRest($jsonData->location_rest);
@@ -118,13 +123,62 @@ class RestaurantController extends AbstractController
     }
 
     /**
+     * @Route("/restaurant/{id}/addCategory", name="add_category_restaurant", methods={"PUT"})
+     */
+    public function addCategoryToRestaurant(int $id, Request $request, ManagerRegistry $doctrine, RestaurantRepository $restaurantRepository, CategoryRepository $categoryRepository)
+    {
+        try {
+            $jsonData = json_decode($request->getContent());
+            $entityManager = $doctrine->getManager();
+            $restaurant = $restaurantRepository->find($id);
+            if ($restaurant === null) {
+                return new JsonResponse(
+                    ['error' => 'Restaurante no encontrado.'],
+                    404
+                );
+            }
+            $category = $categoryRepository->find($jsonData->category);
+            if ($category) {
+                $restaurant->addCategory($category, $jsonData->description);
+                $entityManager->flush();
+                $restaurantRepository->insertDescInRel($id, $jsonData->category, $jsonData->description);
+                return new JsonResponse([
+                    "status" => 200,
+                    "message" => "Se agrego la categoria al restaurante.",
+                    "restaurant" => $restaurant->toArray()
+                ]);
+            } else {
+                return new JsonResponse(['error' => 'Categoria no encontrada.'], 404);
+            }
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al agregar la categoria al restaurante', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * @Route("/restaurant/{id_rest}/removeCategory/{id_cat}", name="remove_category_restaurant", methods={"DELETE"})
+     */
+    public function removeCategoryFromRestaurant($id_rest, $id_cat, RestaurantRepository $restaurantRepository): Response
+    {
+        try {
+            $restaurantRepository->deleteRel($id_rest, $id_cat);
+            return new JsonResponse([
+                "status" => 200,
+                "message" => "Se elimino la categoria al restaurante."
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al eliminar la categoria al restaurante', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
      * @Route("/restaurant/{id}", name="delete_restaurant", methods={"DELETE"})
      */
-    public function delete(int $id, ManagerRegistry $doctrine): Response
+    public function delete(int $id, ManagerRegistry $doctrine, RestaurantRepository $restaurantRepository): Response
     {
         try {
             $entityManager = $doctrine->getManager();
-            $restaurant = $entityManager->getRepository(Restaurant::class)->find($id);
+            $restaurant = $restaurantRepository->find($id);
             if (!$restaurant) {
                 return new JsonResponse(['error' => 'Restaurante no encontrado.'], 404);
             }

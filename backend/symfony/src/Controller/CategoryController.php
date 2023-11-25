@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,11 +17,10 @@ class CategoryController extends AbstractController
     /**
      * @Route("/categories", name="categories", methods={"GET"})
      */
-    public function index(ManagerRegistry $doctrine)
+    public function index(CategoryRepository $categoryRepository)
     {
         try {
-            $repository = $doctrine->getManager()->getRepository(Category::class);
-            $categories = $repository->findAll();
+            $categories = $categoryRepository->findAll();
             $data = [];
             foreach ($categories as $category) {
                 $data[] = $category->toArray();
@@ -33,22 +34,49 @@ class CategoryController extends AbstractController
             return new JsonResponse(['error' => 'Error al recuperar datos de las categorias.', 'message' => $e->getMessage()], 500);
         }
     }
-
+    
     /**
-     * @Route("/category/{id}", name="category", methods={"GET"})
+     * @Route("/categories/notIn/{id}", name="categories_not_in", methods={"GET"})
      */
-    public function show($id, ManagerRegistry $doctrine): Response
+    public function categoriesNotInRest($id, CategoryRepository $categoryRepository)
     {
         try {
-            $repository = $doctrine->getManager()->getRepository(Category::class);
-            $category = $repository->findOneBy(['id_cat' => $id]);
-            if (!$category instanceof Category) {
-                throw new \Exception('No se ha encontrado la categoria');
-            }
+            $categories = $categoryRepository->categoriesNotInRest($id);
+            // $data = [];
+            // foreach ($categories as $category) {
+            //     $data[] = $category->toArray();
+            // }
             return new JsonResponse([
                 "status" => 200,
                 "message" => "success",
-                "category" => $category->toArray()
+                "categories" => $categories
+            ], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al recuperar datos de las categorias.', 'message' => $e->getMessage()], 500);
+        }
+    }
+    
+    /**
+     * @Route("/category/{id}", name="category", methods={"GET"})
+     */
+    public function show($id, CategoryRepository $categoryRepository): Response
+    {
+        try {
+            $category = $categoryRepository->find($id);
+            if (!$category instanceof Category) {
+                throw new \Exception('No se ha encontrado la categoria');
+            }
+
+            $categoryData = [
+                'id_cat' => $category->getIdCat(),
+                'name_cat' => $category->getNameCat(),
+                'img_cat' => $category->getImgCat(),
+                'restaurants' => $categoryRepository->findRestaurantsOfIdCategory($id)
+            ];
+            return new JsonResponse([
+                "status" => 200,
+                "message" => "success",
+                "category" => $categoryData
             ], 200);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Error al recuperar los detalles de la categoria', 'message' => $e->getMessage()], 404);
@@ -81,12 +109,12 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/{id}", name="update_category", methods={"PUT"})
      */
-    public function update(int $id, Request $request, ManagerRegistry $doctrine)
+    public function update(int $id, Request $request, ManagerRegistry $doctrine, CategoryRepository $categoryRepository)
     {
         try {
             $jsonData = json_decode($request->getContent());
             $entityManager = $doctrine->getManager();
-            $category = $entityManager->getRepository(Category::class)->findOneBy(['id_cat' => $id]);
+            $category = $categoryRepository->find($id);
             if ($category === null) {
                 return new JsonResponse(['error' => 'Categoria no encontrada.'], 404);
             }
@@ -106,11 +134,11 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/{id}", name="delete_category", methods={"DELETE"})
      */
-    public function delete(int $id, ManagerRegistry $doctrine): Response
+    public function delete(int $id, ManagerRegistry $doctrine, CategoryRepository $categoryRepository): Response
     {
         try {
             $entityManager = $doctrine->getManager();
-            $category = $entityManager->getRepository(Category::class)->findOneBy(['id_cat' => $id]);
+            $category = $categoryRepository->find($id);
             if (!$category) {
                 return new JsonResponse(['error' => 'Categoria no encontrada.'], 404);
             }

@@ -14,7 +14,7 @@ class Restaurant
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id_rest = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name_rest = null;
@@ -25,17 +25,18 @@ class Restaurant
     #[ORM\Column(length: 255)]
     private ?string $location_rest = null;
 
-    #[ORM\OneToMany(targetEntity: Tables::class, mappedBy: 'tables')]
-    private Collection $tables;
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'restaurant')]
+    private Collection $categories;
+
 
     public function __construct()
     {
-        $this->tables = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getIdRest(): ?int
     {
-        return $this->id_rest;
+        return $this->id;
     }
 
     public function getNameRest(): ?string
@@ -75,20 +76,35 @@ class Restaurant
     }
 
     /**
-     * @return Collection<int, Tables>
+     * @return Collection<int, Category>
      */
-    public function getTables(): Collection
+    public function getCategories(): Collection
     {
-        return $this->tables;
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        $this->categories->removeElement($category);
+        return $this;
     }
 
     public function toArray(): array
     {
         return [
-            'id_rest' => $this->getIdRest(),
-            'name_rest' => $this->getNameRest(),
-            'img_rest' => $this->getImgRest(),
-            'location_rest' => $this->getLocationRest()
+            'id_rest' => $this->id,
+            'name_rest' => $this->name_rest,
+            'img_rest' => $this->img_rest,
+            'location_rest' => $this->location_rest
         ];
     }
 }
