@@ -28,8 +28,8 @@ class RestaurantRepository extends ServiceEntityRepository
     {
         $sql = "SELECT c.*, rc.desc_rest_cat
                 FROM restaurant r
-                LEFT JOIN restaurant_category rc ON r.id = rc.restaurant_id
-                LEFT JOIN categories c ON rc.category_id = c.id
+                INNER JOIN restaurant_category rc ON r.id = rc.restaurant_id
+                INNER JOIN categories c ON rc.category_id = c.id
                 WHERE r.id = :id";
 
         $result = $this->connection->executeQuery($sql, ['id' => $id]);

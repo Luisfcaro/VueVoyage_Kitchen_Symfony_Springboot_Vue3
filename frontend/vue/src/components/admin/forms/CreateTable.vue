@@ -1,7 +1,7 @@
 <template>
     <div class="createTable">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" v-if="!editModal">
                 <h4>Create Table</h4>
             </div>
             <div class="card-body">
@@ -30,7 +30,6 @@
 </template>
   
 <script setup>
-import { computed, ref } from 'vue';
 import { useStore } from 'vuex'
 import Constant from '../../../Constant';
 
@@ -54,9 +53,8 @@ const props = defineProps({
 
 const store = useStore();
 
-const formData = (edit = false) => {
+const formData = () => {
     return {
-        id_table: edit ? props.data.id_table : null,
         id_rest: props.idRestaurant,
         number_table: props.data.num_table,
         capacity_table: props.data.capacity_table,
@@ -66,6 +64,13 @@ const formData = (edit = false) => {
 
 const submitForm = async () => {
     await store.dispatch('restaurant/' + Constant.ADD_TABLE, formData())
+        .then((data) => {
+            if(data === true){
+                console.log("insertado");
+            } else {
+                console.log("error al añadir mesa");
+            }
+        })
     props.data.num_table = "";
     props.data.capacity_table = "";
     props.data.status_table = "";

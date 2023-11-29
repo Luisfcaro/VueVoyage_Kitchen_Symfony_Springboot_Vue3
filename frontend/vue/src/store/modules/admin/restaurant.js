@@ -104,8 +104,10 @@ const actions = {
                 .then((response) => {
                     store.commit(Constant.ADD_TABLE, response.data.table);
                 })
+            return true
         } catch (error) {
             console.error(error);
+            return error
         }
     },
     [Constant.ADD_CATEGORY]: async (store, payload) => {

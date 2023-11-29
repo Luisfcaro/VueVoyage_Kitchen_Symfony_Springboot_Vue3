@@ -10,23 +10,14 @@
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
                         <router-link :to="{ name: 'dash' }" class="nav-link d-flex"
-                            :class="{ 'active': currentRouteName === 'dash' }" aria-current="page">
+                            :class="{ 'active': (currentRouteName === 'dash' || currentRouteName === 'dashRest') }" aria-current="page">
                             <div class="icon me-3">
                                 <font-awesome-icon icon="chart-line" />
                             </div>
                             Dashboard
                         </router-link>
                     </li>
-                    <li>
-                        <router-link :to="{ name: 'dashCategories' }" class="nav-link d-flex"
-                            :class="{ 'active': currentRouteName === 'dashCategories' }" aria-current="page">
-                            <div class="icon me-3">
-                                <font-awesome-icon icon="closed-captioning" />
-                            </div>
-                            Categories
-                        </router-link>
-                    </li>
-                    <!-- <li>
+                    <!-- <li v-if="Object.entries(restaurant).length !== 0">
                         <a class="nav-link text-white" data-bs-toggle="collapse" data-bs-target="#contentId"
                             aria-expanded="false" aria-controls="contentId">
                             <svg class="bi pe-none me-2" width="16" height="16">
@@ -38,6 +29,24 @@
                             </div>
                         </a>
                     </li> -->
+                    <!-- <li v-if="Object.entries(restaurant).length !== 0" class="ps-3">
+                        <router-link :to="{ name: 'dashRestCat', params: {idRest: restaurant.id_rest} }" class="nav-link d-flex"
+                            :class="{ 'active': currentRouteName === 'dashRestCat' }" aria-current="page">
+                            <div class="icon me-3">
+                                <font-awesome-icon icon="closed-captioning" />
+                            </div>
+                            Categories
+                        </router-link>
+                    </li> -->
+                    <li>
+                        <router-link :to="{ name: 'dashCategories' }" class="nav-link d-flex"
+                            :class="{ 'active': currentRouteName === 'dashCategories' }" aria-current="page">
+                            <div class="icon me-3">
+                                <font-awesome-icon icon="closed-captioning" />
+                            </div>
+                            Categories
+                        </router-link>
+                    </li>
                 </ul>
                 <hr>
                 <div class="dropdown p-1">
@@ -66,19 +75,32 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex'
 
 const store = useStore();
+const router = useRouter();
 
 const isSidebarOpen = computed(() => store.getters['sidebar/isSidebarOpen'])
+
+const restaurant = computed(() => store.getters['restaurant/restaurant'])
+
 const toggleSidebar = () => store.dispatch('sidebar/toggleSidebar');
 
 const currentRouteName = ref('');
 
 onMounted(() => {
-    currentRouteName.value = useRoute().name;
+    currentRouteName.value = router.currentRoute.value.name;
+});
+
+const handleRouteChange = () => {
+    currentRouteName.value = router.currentRoute.value.name;
+};
+
+onMounted(() => {
+    handleRouteChange();
+    watch(() => router.currentRoute.value.fullPath, handleRouteChange);
 });
 
 </script>

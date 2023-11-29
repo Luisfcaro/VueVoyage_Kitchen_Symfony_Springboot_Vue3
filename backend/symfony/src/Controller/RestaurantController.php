@@ -53,6 +53,7 @@ class RestaurantController extends AbstractController
             $tablesRestaurant = $tablesRepository->findBy(['id_rest' => $restaurant->getIdRest()]);
 
             $data = $restaurant->toArray();
+            $data['tables'] = [];
             foreach ($tablesRestaurant as $table) {
                 $data['tables'][] = $table->toArray();
             }
