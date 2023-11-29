@@ -41,6 +41,8 @@ public class Restaurants {
   // @JsonIgnore
   private Set<Categories> categories = new HashSet<>();
 
+  @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+  private List<Tables> tables;
 
 
   public Restaurants() {
@@ -59,6 +61,14 @@ public class Restaurants {
 
   public void setCategories(Set<Categories> categories) {
       this.categories = categories;
+  }
+
+  public List<Tables> getTables() {
+      return this.tables;
+  }
+
+  public void setTables(List<Tables> tables) {
+      this.tables = tables;
   }
 
   public Long getId() {
@@ -93,6 +103,6 @@ public class Restaurants {
 
 	@Override
 	public String toString() {
-		return "Restaurants: [id_rest=" + id + ", name_rest=" + name + ", img=" + img + ", location=" + location + ", categories=" + categories + "]";
+		return "Restaurants: [id_rest=" + id + ", name_rest=" + name + ", img=" + img + ", location=" + location + ", categories=" + categories + ", tables=" + tables + "]";
 	}
 }
