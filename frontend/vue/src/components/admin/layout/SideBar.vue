@@ -10,34 +10,24 @@
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
                         <router-link :to="{ name: 'dash' }" class="nav-link d-flex"
-                            :class="{ 'active': (currentRouteName === 'dash' || currentRouteName === 'dashRest') }" aria-current="page">
+                            :class="{ 'active': (currentRouteName === 'dash' || currentRouteName === 'dashRest' || currentRouteName === 'categoriesRestaurnat') }"
+                            aria-current="page">
                             <div class="icon me-3">
                                 <font-awesome-icon icon="chart-line" />
                             </div>
                             Dashboard
                         </router-link>
                     </li>
-                    <!-- <li v-if="Object.entries(restaurant).length !== 0">
-                        <a class="nav-link text-white" data-bs-toggle="collapse" data-bs-target="#contentId"
-                            aria-expanded="false" aria-controls="contentId">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#people-circle"></use>
-                            </svg>
-                            Show
-                            <div class="collapse" id="contentId">
-                                sdfsdfd
-                            </div>
-                        </a>
-                    </li> -->
-                    <!-- <li v-if="Object.entries(restaurant).length !== 0" class="ps-3">
-                        <router-link :to="{ name: 'dashRestCat', params: {idRest: restaurant.id_rest} }" class="nav-link d-flex"
-                            :class="{ 'active': currentRouteName === 'dashRestCat' }" aria-current="page">
+                    <li v-if="currentRouteName === 'dashRest' || currentRouteName === 'categoriesRestaurnat'">
+                        <router-link class="nav-link text-white d-flex" :class="{ 'ms-3': isSidebarOpen }"
+                            :to="{ name: 'categoriesRestaurnat', params: { idRestaurant: route.params.idRestaurant } }">
                             <div class="icon me-3">
                                 <font-awesome-icon icon="closed-captioning" />
                             </div>
                             Categories
                         </router-link>
-                    </li> -->
+                    </li>
+                    <hr>
                     <li>
                         <router-link :to="{ name: 'dashCategories' }" class="nav-link d-flex"
                             :class="{ 'active': currentRouteName === 'dashCategories' }" aria-current="page">
@@ -76,15 +66,14 @@
 
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex'
 
 const store = useStore();
 const router = useRouter();
+const route = useRoute();
 
 const isSidebarOpen = computed(() => store.getters['sidebar/isSidebarOpen'])
-
-const restaurant = computed(() => store.getters['restaurant/restaurant'])
 
 const toggleSidebar = () => store.dispatch('sidebar/toggleSidebar');
 

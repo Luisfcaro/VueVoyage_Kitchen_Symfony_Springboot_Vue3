@@ -16,4 +16,6 @@ export default {
     // CATEGORIES
     ADD_CATEGORY: "AddCategory",
     GET_ALL_CATEGORIES: "GetCategories",
+    ADD_CATEGORY_RESTAURANT: "AddCategoryRestaurant",
+    REMOVE_CATEGORY_RESTAURANT: "DeleteCategoryRestaurant"
 }
