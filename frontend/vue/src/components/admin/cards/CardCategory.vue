@@ -3,6 +3,8 @@
         <div class="card-body">
             <h4 class="card-title">{{ category.name_cat }}</h4>
             <img :src="category.img_cat" alt="">
+            <p v-if="category.desc_rest_cat">{{ category.desc_rest_cat }}</p>
+            <slot></slot>
         </div>
     </div>
 </template>

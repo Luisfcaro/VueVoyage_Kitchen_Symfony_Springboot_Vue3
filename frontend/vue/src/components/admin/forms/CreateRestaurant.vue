@@ -1,9 +1,8 @@
 <template>
     <div class="createRestaurant">
         <div class="card">
-            <div class="card-header">
-                <h4 v-if="Object.entries(data).length === 0">Create Restaurant</h4>
-                <h4 v-else>Update Restaurant</h4>
+            <div class="card-header" v-if="!editModal">
+                <h4>Create Restaurant</h4>
             </div>
             <div class="card-body">
                 <form @submit.prevent="submitForm">
@@ -22,7 +21,7 @@
                         <input v-model="data.location_rest" type="text" class="form-control" id="location_rest" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">{{props.edit ? 'Guardar' : 'Enviar'}}</button>
+                    <button type="submit" class="btn btn-primary" v-if="!editModal">Crear</button>
                 </form>
             </div>
         </div>
@@ -30,7 +29,6 @@
 </template>
   
 <script setup>
-import { ref } from 'vue';
 import { useStore } from 'vuex'
 import Constant from '../../../Constant';
 
@@ -43,7 +41,7 @@ const props = defineProps({
             location_rest: ""
         })
     },
-    edit: {
+    editModal: {
         type: Boolean,
         default: false
     }
@@ -51,9 +49,8 @@ const props = defineProps({
 
 const store = useStore();
 
-const formData = (edit = false) => {
+const formData = () => {
     return {
-        id_rest: edit ? props.data.id_rest : null,
         name_rest: props.data.name_rest,
         img_rest: props.data.img_rest,
         location_rest: props.data.location_rest
@@ -61,17 +58,12 @@ const formData = (edit = false) => {
 }
 
 const submitForm = async () => {
-    if (!props.edit) {
-        await store.dispatch('restaurant/' + Constant.ADD_RESTAURANT, formData())
-        props.data.name_rest = "";
-        props.data.img_rest = "";
-        props.data.location_rest = "";
-    } else {
-        await store.dispatch('restaurant/' + Constant.UPDATE_RESTAUNT, formData(true))
-    }
+    await store.dispatch('restaurant/' + Constant.ADD_RESTAURANT, formData())
+    props.data.name_rest = "";
+    props.data.img_rest = "";
+    props.data.location_rest = "";
+}
 
-
-};
 </script>
   
 <style></style>

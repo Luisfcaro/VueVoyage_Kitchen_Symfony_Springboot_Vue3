@@ -31,4 +31,6 @@ export default {
     GET_ALL_CATEGORIES_CLIENT: "GetCategoriesClient",
     GET_ONE_CATEGORY_CLIENT: "GetOneCategoryClient",
 
+    ADD_CATEGORY_RESTAURANT: "AddCategoryRestaurant",
+    REMOVE_CATEGORY_RESTAURANT: "DeleteCategoryRestaurant"
 }

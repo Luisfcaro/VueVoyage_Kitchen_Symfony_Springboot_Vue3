@@ -52,6 +52,10 @@ const mutations = {
     [Constant.INI_RESTAURANT]: (state) => {
         state.restaurant = {}
     },
+    [Constant.REMOVE_CATEGORY_RESTAURANT]: (state, payload) => {
+        let index = state.restaurant.categories.findIndex(category => category.id === payload.idCategory)
+        state.restaurant.categories.splice(index, 1)
+    }
 };
 
 const actions = {
@@ -104,8 +108,10 @@ const actions = {
                 .then((response) => {
                     store.commit(Constant.ADD_TABLE, response.data.table);
                 })
+            return true
         } catch (error) {
             console.error(error);
+            return error
         }
     },
     [Constant.ADD_CATEGORY]: async (store, payload) => {
@@ -151,6 +157,30 @@ const actions = {
     [Constant.INI_RESTAURANT]: async (store) => {
         store.commit(Constant.INI_RESTAURANT);
     },
+    [Constant.REMOVE_CATEGORY_RESTAURANT]: async (store, payload) => {
+        try {
+            await symfonyApiService.delete('/restaurant/' + payload.idRestaurant + '/removeCategory/' + payload.idCategory)
+                .then((response) => {
+                    store.commit(Constant.REMOVE_CATEGORY_RESTAURANT, payload)
+                })
+            return true
+        } catch (error) {
+            console.error(error)
+            return error
+        }
+    },
+    [Constant.ADD_CATEGORY_RESTAURANT]: async (store, payload) => {
+        try {
+            await symfonyApiService.put('/restaurant/' + payload.idRestaurant + '/addCategory', payload)
+                .then((response) => {
+                    store.dispatch(Constant.GET_ONE_RESTAURANT, payload.idRestaurant)
+                })
+            return true
+        } catch (error) {
+            console.error(error)
+            return error
+        }
+    }
 };
 
 const getters = {

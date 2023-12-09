@@ -1,18 +1,15 @@
 <template>
     <div class="categories">
-        <SideBar />
-        <div class="container categories" :class="{ 'active-sidebar': isSidebarOpen }">
-            <div class="row">
-                <div class="mt-3">
-                    <div class="card w-100">
-                        <div class="card-header">
-                            <h4>Categories</h4>
-                        </div>
-                        <div class="card-body">
-                            <CreateCategory />
-                            <hr>
-                            <ListCategories :categories="categories" />
-                        </div>
+        <div class="row">
+            <div class="mt-3">
+                <div class="card w-100">
+                    <div class="card-header">
+                        <h4>Categories</h4>
+                    </div>
+                    <div class="card-body">
+                        <CreateCategory />
+                        <hr>
+                        <ListCategories :categories="categories" />
                     </div>
                 </div>
             </div>
@@ -22,7 +19,6 @@
 
 <script setup>
 import { computed } from 'vue';
-import SideBar from '../../components/admin/layout/SideBar.vue';
 import CreateCategory from '../../components/admin/forms/CreateCategory.vue';
 import ListCategories from '../../components/admin/lists/ListCategories.vue';
 import { useStore } from 'vuex';
@@ -32,7 +28,6 @@ const store = useStore();
 
 store.dispatch('restaurant/' + Constant.GET_ALL_CATEGORIES)
 
-const isSidebarOpen = computed(() => store.getters['sidebar/isSidebarOpen'])
 const categories = computed(() => store.getters['restaurant/categories'])
 
 </script>
