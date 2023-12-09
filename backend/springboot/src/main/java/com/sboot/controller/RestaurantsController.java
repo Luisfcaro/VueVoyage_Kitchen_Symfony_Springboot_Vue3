@@ -6,12 +6,15 @@ import com.sboot.repository.RestaurantsRepository;
 import com.sboot.dto.RestaurantDTO;
 import com.sboot.model.Categories;
 import com.sboot.dto.CategoryDTO;
+import com.sboot.model.RestQueryParams;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.HashSet;
 import java.util.Arrays;
+import java.util.Set;
 
 
 @CrossOrigin(origins = "*")
@@ -28,18 +32,47 @@ public class RestaurantsController {
 
     @Autowired
     private RestaurantsService restaurantsService;
+    private RestaurantsRepository restaurantsRepository;
 
-    @GetMapping
-	public ResponseEntity<?> getAllRestaurants() {
+    @GetMapping()
+	public ResponseEntity<?> getAllRestaurants(@ModelAttribute RestQueryParams RestQueryParams) {
 		try {
+
 			List<Restaurants> restaurants = new ArrayList<Restaurants>();
-			restaurantsService.getRestaurants().forEach(restaurants::add);
-			// restaurantsService.getRestaurants();
+
+            restaurantsService.getRestaurants(RestQueryParams.getCategories(), RestQueryParams.getName_rest(), RestQueryParams.getLimit(), RestQueryParams.getPage(), RestQueryParams.getOrder()).forEach(restaurants::add);
+
 			return new ResponseEntity<>(restaurants, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error buscando los restaurantes " + e.getMessage());
 		}
 	}
+
+    @GetMapping("/paginate")
+    public ResponseEntity<?> getAllRestaurantsPaginate(@ModelAttribute RestQueryParams RestQueryParams) {
+        try {
+
+            Integer total = restaurantsService.getRestaurantsPaginate(RestQueryParams.getCategories(), RestQueryParams.getName_rest(), RestQueryParams.getLimit(), RestQueryParams.getPage());
+
+            return new ResponseEntity<>(total, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error buscando los restaurantes " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/infinitescroll")
+    public ResponseEntity<?> getAllRestaurantsInfiniteScroll(@ModelAttribute RestQueryParams RestQueryParams) {
+        try {
+
+            List<Restaurants> restaurants = new ArrayList<Restaurants>();
+
+            restaurantsService.getInfiniteScrollRestaurants(RestQueryParams.getLimit()).forEach(restaurants::add);
+
+            return new ResponseEntity<>(restaurants, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error buscando los restaurantes " + e.getMessage());
+        }
+    }
 
 
     @GetMapping("/{restaurantId}")

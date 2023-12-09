@@ -1,15 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Dashboard from "../views/admin/Dashboard.vue";
-import Categories from "../views/admin/Categories.vue";
-import CanvaPrueva from "../views/CanvaPrueva.vue"
 
 const routes = [
-  { path: "", redirect: { name: "dash" } },
-  { path: "/admin/dashboard", name: "dash", component: Dashboard },
-  { path: "/admin/dashboard/categories", name: "dashCategories", component: Categories },
-  { path: "/admin/dashboard/:idRestaurant", name: "dashRest", component: Dashboard },
-  { path: "/canva", name: "canva", component: CanvaPrueva }
+  {
+    path: "/",
+    redirect: { name: "home" }
+  },
+  {
+    path: "/home",
+    name: "home",
+    component: () => import('../views/client/Home.vue')
+  },
+  {
+    path: "/shop",
+    name: "shop",
+    component: () => import('../views/client/Shop.vue')
+  },
 ];
 
 const router = createRouter({

@@ -16,4 +16,19 @@ export default {
     // CATEGORIES
     ADD_CATEGORY: "AddCategory",
     GET_ALL_CATEGORIES: "GetCategories",
+
+    /////////////////////////////////////////////////////CLIENT///////////////////////////////////////////////////
+
+    // RESTAURANTS
+    GET_ALL_RESTAURANTS_CLIENT: "GetRestaurantsClient",
+    GET_ONE_RESTAURANT_CLIENT: "GetOneRestaurantClient",
+
+    // TABLES
+    GET_ALL_TABLES_CLIENT: "GetTablesClient",
+    GET_ONE_TABLE_CLIENT: "GetOneTableClient",
+
+    // CATEGORIES
+    GET_ALL_CATEGORIES_CLIENT: "GetCategoriesClient",
+    GET_ONE_CATEGORY_CLIENT: "GetOneCategoryClient",
+
 }

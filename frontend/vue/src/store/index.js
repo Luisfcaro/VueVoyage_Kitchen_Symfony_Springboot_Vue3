@@ -1,12 +1,14 @@
 import { createStore } from 'vuex';
-// import Constant from '../Constant';
 import sidebar from './modules/admin/sidebar'
 import restaurant from './modules/admin/restaurant'
+import restaurant_client from './modules/client/restaurant_client';
+
 
 const store = createStore({
     modules: {
         sidebar: sidebar,
-        restaurant
+        restaurant,
+        restaurant_client,
     }
 });
 

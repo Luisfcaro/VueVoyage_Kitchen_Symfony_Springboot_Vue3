@@ -1,0 +1,122 @@
+<template>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>VueVoyage</title>
+    </head>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="../../../assets/img/VueVoyage.png" alt="Logo del Restaurante" class="logo">
+                <div class="brand-title">VueVoyage</div>
+            </div>
+            <ul class="menu-list">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/shop">Reservas</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+</template>
+
+<script setup>
+
+</script>
+
+<style scoped lang="scss">
+
+    $primary-color: #8B0000; // Un color oscuro para un aspecto gourmet
+    $secondary-color: #fff;
+    $hover-color: darken($primary-color, 15%);
+    $text-color: #fff;
+
+    // Añadir una fuente más elegante
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+        font-family: 'Roboto', sans-serif; // Cambio a una fuente más moderna
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background: #f4f4f4; // Un fondo suave para contraste
+    }
+
+    header {
+        background: $primary-color;
+        padding: 15px 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); // Sutil sombra para profundidad
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 0 20px;
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+
+            .logo {
+                height: 60px; // Un poco más grande para destacar
+                margin-right: 15px;
+                transition: transform 0.3s ease; // Transición para el logo
+
+                &:hover {
+                    transform: scale(1.05); // Efecto de zoom al pasar el ratón
+                }
+            }
+
+            .brand-title {
+                font-size: 2em; // Aumentar tamaño para más presencia
+                color: $secondary-color;
+                font-weight: 700; // Más bold para destacar
+            }
+        }
+
+        .menu-list {
+            list-style: none;
+            display: flex;
+            padding-left: 0;
+            margin: 0;
+
+            li {
+                padding: 0 20px; // Más espacio para mejor legibilidad
+
+                a {
+                    text-decoration: none;
+                    color: $text-color;
+                    font-weight: bold;
+                    transition: color 0.3s ease, border-bottom-color 0.3s ease; // Suavizar transiciones
+
+                    &:hover {
+                        color: $hover-color;
+                    }
+
+                    &.active {
+                        border-bottom: 3px solid $text-color; // Hacerlo más notable
+                    }
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .navbar {
+            .menu-list {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+
+                li {
+                    padding: 10px 0; // Más espacio para toques en móviles
+                }
+            }
+        }
+    }
+
+
+</style>
