@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Categories from "../views/admin/Categories.vue";
 import Dashboard from "../views/admin/Dashboard.vue";
 import Restaurant from "../views/admin/Restaurant.vue";
+import CategoriesRestaurant from "../views/admin/CategoriesRestaurant.vue";
 
 const routes = [
   { path: "", redirect: { name: "dash" } },
@@ -30,6 +31,11 @@ const routes = [
         path: "dashboard/categories",
         name: "dashCategories",
         component: Categories
+      },
+      {
+        path: "dashboard/:idRestaurant/categories",
+        name: "categoriesRestaurnat",
+        component: CategoriesRestaurant
       }
     ]
   }
