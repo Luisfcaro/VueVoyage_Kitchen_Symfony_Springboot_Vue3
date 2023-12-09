@@ -44,9 +44,7 @@
         limitNew.value++;
 
     if (limitNew.value <= 6) {
-      emit('limitNew', limitNew.value);
-      // Supongamos que esta función carga más datos
-      loadMoreData(); // Esta función debería cargar más datos y luego llamar a $state.loaded()
+      emit('limitNew', limitNew.value); // Emitir evento para agregar más datos
     } else {
       $state.complete(); // Esto indicará que no hay más datos para cargar
     }

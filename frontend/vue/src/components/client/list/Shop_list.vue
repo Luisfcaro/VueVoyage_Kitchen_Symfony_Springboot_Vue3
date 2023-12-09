@@ -10,7 +10,7 @@
 
 <script setup>
     import { useRoute, useRouter } from 'vue-router';
-    import { ref } from 'vue';
+    import { reactive, ref } from 'vue';
     import { useStore } from 'vuex'
     import Shop_card from '../cards/Shop_card.vue';
 
@@ -22,6 +22,21 @@
     const props = defineProps([
         'restaurants'
     ]);
+
+    const state = reactive({
+
+  
+    });
+
+
+
+    // try {
+ 
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+
 
 </script>
 

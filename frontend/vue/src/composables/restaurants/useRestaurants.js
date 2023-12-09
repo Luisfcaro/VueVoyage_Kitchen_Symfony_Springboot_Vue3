@@ -12,9 +12,23 @@ export const useInfiniteRestaurants = (limitNew = 0 , limit = 3) => {
         return restaurants;
     };
 
-export const useRestaurants = () => {
+export const useFiltersRestaurants = (filters = {}) => {
+    let cadena = '';
+    if (filters.categories.length > 0 ){
+        filters.categories.forEach((category, index) => {
+            if (index === 0) {
+                cadena += '?categories=' + category;
+            } else {
+                cadena += '&categories=' + category;
+            }
+        });
+    } else {
+        cadena = '?categories=';
+    }
+
     const restaurants = ref([])
-    springbootApiService.get('/restaurants')
+    springbootApiService.get('/restaurants' + cadena + '&name_rest=' + filters.name_rest + '&page=' + filters.page + '&limit=' + filters.limit + '&order=' + filters.order )
+
         .then(res => restaurants.value = res.data)
         .catch(err => console.log(err)) 
     
@@ -22,11 +36,30 @@ export const useRestaurants = () => {
 }
 
 
-export const useRestaurantsPaginate = () => {
-    const restaurants = ref([])
-    springbootApiService.get('/restaurants/paginate')
-        .then(res => restaurants.value = res.data)
-        .catch(err => console.log(err)) 
+export const useRestaurantsPaginate = (filters = {}) => {
+    let cadena = '';
+    if (filters.categories.length > 0 ){
+        filters.categories.forEach((category, index) => {
+            if (index === 0) {
+                cadena += '?categories=' + category;
+            } else {
+                cadena += '&categories=' + category;
+            }
+        });
+    } else {
+        cadena = '?categories=';
+    }
+
+
+    const total_pages = ref(0)
+    springbootApiService.get('/restaurants/paginate' + cadena + '&name_rest=' + filters.name_rest + '&page=' + filters.page + '&limit=' + filters.limit + '&order=' + filters.order)
+        .then(res => {
+            const qty_rest = res.data
+            const pages = Math.ceil( qty_rest/ filters.limit);
+            total_pages.value = pages;
+        
+        })
+        .catch(err => console.log(err))
     
-    return restaurants;
+    return total_pages;
 }
