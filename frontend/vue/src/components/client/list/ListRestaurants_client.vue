@@ -23,7 +23,7 @@
 <script setup>
     import InfiniteLoading from 'v3-infinite-loading';
     import { useRoute, useRouter } from 'vue-router';
-    import { getCurrentInstance, ref } from 'vue';
+    import { ref } from 'vue';
 
     import CardRestaurant_client from '../cards/CardRestaurant_client.vue';
 

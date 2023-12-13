@@ -26,11 +26,14 @@ export const useFiltersRestaurants = (filters = {}) => {
         cadena = '?categories=';
     }
 
-    const restaurants = ref([])
-    springbootApiService.get('/restaurants' + cadena + '&name_rest=' + filters.name_rest + '&page=' + filters.page + '&limit=' + filters.limit + '&order=' + filters.order )
+    const restaurants = ref([0])
+    springbootApiService.get('/restaurants' + cadena + '&name_rest=' + filters.name_rest + '&page=' + 1 + '&limit=' + filters.limit + '&order=' + filters.order )
+        .then(res => {
+            restaurants.value = res.data
+            console.log(res.data);
+        })
+        .catch(err => console.log(err))
 
-        .then(res => restaurants.value = res.data)
-        .catch(err => console.log(err)) 
     
     return restaurants;
 }

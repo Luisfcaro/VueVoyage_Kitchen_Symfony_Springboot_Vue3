@@ -4,8 +4,6 @@
             <Shop_card :restaurant="restaurant" />
         </div>
 
-        {{ restaurants  }}
-
 </template>
 
 <script setup>
@@ -22,20 +20,6 @@
     const props = defineProps([
         'restaurants'
     ]);
-
-    const state = reactive({
-
-  
-    });
-
-
-
-    // try {
- 
-    // } catch (error) {
-    //     console.log(error);
-    // }
-
 
 
 </script>
