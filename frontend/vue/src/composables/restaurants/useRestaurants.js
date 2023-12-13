@@ -52,7 +52,7 @@ export const useRestaurantsPaginate = (filters = {}) => {
 
 
     const total_pages = ref(0)
-    springbootApiService.get('/restaurants/paginate' + cadena + '&name_rest=' + filters.name_rest + '&page=' + filters.page + '&limit=' + filters.limit + '&order=' + filters.order)
+    springbootApiService.get('/restaurants/paginate' + cadena + '&name_rest=' + filters.name_rest + '&page=' + 1 + '&limit=' + filters.limit + '&order=' + filters.order)
         .then(res => {
             const qty_rest = res.data
             const pages = Math.ceil( qty_rest/ filters.limit);

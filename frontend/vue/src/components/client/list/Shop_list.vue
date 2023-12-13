@@ -1,45 +1,31 @@
 <template>
-
+    <div>
         <div class="" v-for="(restaurant, index) in restaurants" :key="index">
             <Shop_card :restaurant="restaurant" />
         </div>
-
-        {{ restaurants  }}
-
+        <slot></slot>
+    </div>
 </template>
 
 <script setup>
-    import { useRoute, useRouter } from 'vue-router';
-    import { reactive, ref } from 'vue';
-    import { useStore } from 'vuex'
-    import Shop_card from '../cards/Shop_card.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { reactive, ref } from 'vue';
+import { useStore } from 'vuex'
+import Shop_card from '../cards/Shop_card.vue';
 
-    const router = useRouter()
-    const route = useRoute()
-    const idRestaurant = ref(null)
-    const store = useStore();
+const router = useRouter()
+const route = useRoute()
+const idRestaurant = ref(null)
+const store = useStore();
 
-    const props = defineProps([
-        'restaurants'
-    ]);
+const props = defineProps([
+    'restaurants'
+]);
 
-    const state = reactive({
-
-  
-    });
+const state = reactive({
 
 
-
-    // try {
- 
-    // } catch (error) {
-    //     console.log(error);
-    // }
-
-
-
+})
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
