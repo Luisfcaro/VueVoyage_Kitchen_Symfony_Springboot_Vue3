@@ -38,7 +38,17 @@ CREATE TABLE
         FOREIGN KEY (id_rest) REFERENCES restaurant(id)
     );
 
--- Insertar datos en la tabla restaurant
+CREATE TABLE
+    users (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        username VARCHAR(30),
+        password VARCHAR(64),
+        email VARCHAR(128) UNIQUE,
+        type_user VARCHAR(64),
+        is_active BOOL DEFAULT TRUE,
+        photo VARCHAR(256),
+        RT VARCHAR(20)
+    );
 
 INSERT INTO
     restaurant (
@@ -62,7 +72,7 @@ VALUES (
         'Sushi Express',
         'sushiexpress.jpg',
         '789 Calle Secundaria, Ciudad'
-    ),  (
+    ), (
         4,
         'Pasta Paradise',
         'pastaparadise.jpg',
@@ -107,19 +117,28 @@ VALUES (1, 'Italiana', 'italiana.jpg'), (
         2,
         'Argentina',
         'argentina.jpg'
-    ), (3, 'Japonesa', 'japonesa.jpg'), 
-    (4, 'Americana', 'americana.jpg'),
-    (5, 'Mexicana', 'mexicana.jpg'),
-    (6, 'India', 'india.jpg'),
-    (7, 'Vegetariana', 'vegetariana.jpg'),
-    (8, 'Francesa', 'francesa.jpg'),
-    (9, 'China', 'china.jpg'),
-    (10, 'Mediterránea', 'mediterranea.jpg');
+    ), (3, 'Japonesa', 'japonesa.jpg'), (
+        4,
+        'Americana',
+        'americana.jpg'
+    ), (5, 'Mexicana', 'mexicana.jpg'), (6, 'India', 'india.jpg'), (
+        7,
+        'Vegetariana',
+        'vegetariana.jpg'
+    ), (8, 'Francesa', 'francesa.jpg'), (9, 'China', 'china.jpg'), (
+        10,
+        'Mediterránea',
+        'mediterranea.jpg'
+    );
 
 -- Insertar datos en la tabla rest_cat
 
 INSERT INTO
-    restaurant_category (restaurant_id, category_id, desc_rest_cat)
+    restaurant_category (
+        restaurant_id,
+        category_id,
+        desc_rest_cat
+    )
 VALUES (
         1,
         1,
@@ -132,14 +151,35 @@ VALUES (
         3,
         3,
         'Variedad de sushi fresco y delicioso'
-    ),
-    (4, 1, 'Experiencia italiana con un toque moderno'),
-    (5, 4, 'Hamburguesas clásicas y creativas'),
-    (6, 5, 'Los mejores tacos al estilo del norte'),
-    (7, 6, 'Sabores auténticos de la India'),
-    (8, 7, 'Deliciosas opciones vegetarianas'),
-    (9, 8, 'Cocina francesa refinada y elegante'),
-    (10, 9, 'Pizzas al estilo tradicional y contemporáneo');
+    ), (
+        4,
+        1,
+        'Experiencia italiana con un toque moderno'
+    ), (
+        5,
+        4,
+        'Hamburguesas clásicas y creativas'
+    ), (
+        6,
+        5,
+        'Los mejores tacos al estilo del norte'
+    ), (
+        7,
+        6,
+        'Sabores auténticos de la India'
+    ), (
+        8,
+        7,
+        'Deliciosas opciones vegetarianas'
+    ), (
+        9,
+        8,
+        'Cocina francesa refinada y elegante'
+    ), (
+        10,
+        9,
+        'Pizzas al estilo tradicional y contemporáneo'
+    );
 
 -- Insertar datos en la tabla Tables
 
@@ -150,17 +190,4 @@ INSERT INTO
         capacity_table,
         status_table
     )
-VALUES (1, 1, 4, 'Disponible'), (2, 1, 6, 'Ocupada'), (3, 2, 8, 'Disponible'), (4, 3, 5, 'Ocupada'),     (5, 4, 4, 'Disponible'),
-    (6, 4, 2, 'Ocupada'),
-    (7, 5, 4, 'Disponible'),
-    (8, 5, 6, 'Ocupada'),
-    (9, 6, 4, 'Disponible'),
-    (10, 6, 8, 'Ocupada'),
-    (11, 7, 6, 'Disponible'),
-    (12, 7, 2, 'Ocupada'),
-    (13, 8, 4, 'Disponible'),
-    (14, 8, 6, 'Ocupada'),
-    (15, 9, 8, 'Disponible'),
-    (16, 9, 5, 'Ocupada'),
-    (17, 10, 4, 'Disponible'),
-    (18, 10, 6, 'Ocupada');
+VALUES (1, 1, 4, 'Disponible'), (2, 1, 6, 'Ocupada'), (3, 2, 8, 'Disponible'), (4, 3, 5, 'Ocupada'), (5, 4, 4, 'Disponible'), (6, 4, 2, 'Ocupada'), (7, 5, 4, 'Disponible'), (8, 5, 6, 'Ocupada'), (9, 6, 4, 'Disponible'), (10, 6, 8, 'Ocupada'), (11, 7, 6, 'Disponible'), (12, 7, 2, 'Ocupada'), (13, 8, 4, 'Disponible'), (14, 8, 6, 'Ocupada'), (15, 9, 8, 'Disponible'), (16, 9, 5, 'Ocupada'), (17, 10, 4, 'Disponible'), (18, 10, 6, 'Ocupada');

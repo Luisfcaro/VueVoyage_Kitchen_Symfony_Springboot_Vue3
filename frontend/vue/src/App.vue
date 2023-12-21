@@ -2,10 +2,11 @@
 import { useStore } from 'vuex';
 import SideBar from './components/admin/layout/SideBar.vue';
 import { computed } from 'vue';
+import Constant from './Constant';
 
 const store = useStore();
 const isSidebarOpen = computed(() => store.getters['sidebar/isSidebarOpen'])
-
+store.dispatch('user/' + Constant.GET_USER_LOGIN)
 </script>
 
 <template>
