@@ -32,5 +32,11 @@ export default {
     GET_ONE_CATEGORY_CLIENT: "GetOneCategoryClient",
 
     ADD_CATEGORY_RESTAURANT: "AddCategoryRestaurant",
-    REMOVE_CATEGORY_RESTAURANT: "DeleteCategoryRestaurant"
+    REMOVE_CATEGORY_RESTAURANT: "DeleteCategoryRestaurant",
+
+    ///////////////////////////////////////////////////USER///////////////////////////////////////////////////////
+
+    // LOGIN
+    LOGIN_USER: "LoginUser",
+    GET_USER_LOGIN: "GetUserLogin",
 }

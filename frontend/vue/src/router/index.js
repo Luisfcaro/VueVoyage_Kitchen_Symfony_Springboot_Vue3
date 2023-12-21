@@ -3,28 +3,45 @@ import Categories from "../views/admin/Categories.vue";
 import Dashboard from "../views/admin/Dashboard.vue";
 import Restaurant from "../views/admin/Restaurant.vue";
 import CategoriesRestaurant from "../views/admin/CategoriesRestaurant.vue";
-
+import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
+import Home from "../views/client/Home.vue";
+import Shop from "../views/client/Shop.vue";
 
 const routes = [
   {
     path: "/",
-    redirect: { name: "home" }
-  },
-  {
-    path: "/home",
     name: "home",
-    component: () => import('../views/client/Home.vue')
+    component: () => import("../views/client/App.vue"),
+    children: [
+      {
+        path: "home",
+        name: "home",
+        component: Home
+      },
+      {
+        path: "login",
+        name: "login",
+        component: Login
+      },
+      {
+        path: "register",
+        name: "register",
+        component: Register
+      },
+      {
+        path: "shop",
+        name: "shop",
+        component: Shop
+      },
+      {
+        path: "shop/:filters",
+        name: "shop_filter",
+        component: Shop
+      },
+    ]
   },
-  {
-    path: "/shop",
-    name: "shop",
-    component: () => import('../views/client/Shop.vue')
-  },
-  {
-    path: "/shop/:filters",
-    name: "shop_filter",
-    component: () => import('../views/client/Shop.vue')
-  },
+
   {
     path: "/admin",
     name: "admin",
