@@ -38,7 +38,17 @@ CREATE TABLE
         FOREIGN KEY (id_rest) REFERENCES restaurant(id)
     );
 
--- Insertar datos en la tabla restaurant
+CREATE TABLE
+    users (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        username VARCHAR(30),
+        password VARCHAR(64),
+        email VARCHAR(128) UNIQUE,
+        type_user VARCHAR(64),
+        is_active BOOL DEFAULT TRUE,
+        photo VARCHAR(255),
+        RT VARCHAR(20)
+    );
 
 INSERT INTO
     restaurant (
@@ -164,3 +174,20 @@ VALUES (1, 1, 4, 'Disponible'), (2, 1, 6, 'Ocupada'), (3, 2, 8, 'Disponible'), (
     (16, 9, 5, 'Ocupada'),
     (17, 10, 4, 'Disponible'),
     (18, 10, 6, 'Ocupada');
+
+
+-- Insertar un usuario administrador
+INSERT INTO users (username, password, email, type_user, is_active, photo, RT)
+VALUES
+    ('admin', '$2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa', 'admin@gmail.com', 'admin', TRUE, 'admin.jpg', 'patata'),
+    ('kevin', 'kevinaris', 'kevin@gmail.com', 'admin', TRUE, 'kevin.jpg', ''),
+    ('luis', 'luis', 'luis@gmail.com', 'admin', TRUE, 'luis.jpg', '');
+
+-- -- Insertar usuarios normales
+-- INSERT INTO users (username, password, email, type_user, is_active, photo)
+-- VALUES
+--     ('johndoe', 'jonhdoe', 'johndoe@gmail.com', 'client', TRUE, 'johndoe.jpg'),
+--     ('janedoe', 'janedoe', 'janedoe@gmail.com', 'client', TRUE, 'janedoe.jpg'),
+--     ('bobsmith', 'bobsmith', 'bobsmith@gmail.com', 'client', TRUE, 'bobsmith.jpg'),
+--     ('emilybrown', 'emilybrown', 'emilybrown@gmail.com', 'client', TRUE, 'emilybrown.jpg');
+

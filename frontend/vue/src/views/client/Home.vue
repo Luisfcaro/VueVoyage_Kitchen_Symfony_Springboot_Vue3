@@ -2,9 +2,10 @@
   <Header />
   <div class="home">
       <CarouselList :categories="state.categories"/>
-      <ListRestaurants_client :restaurants="state.infiniteRestaurants" @limitNew="addRestaurants" />
+      <ListRestaurants_client :restaurants="state.restaurants" @limitNew="addRestaurants" />
   </div>
   <Footer />
+
 </template>
 
 
@@ -28,14 +29,27 @@ store.dispatch('restaurant_client/' + Constant.GET_ALL_CATEGORIES_CLIENT)
 
 
 const state = reactive({
-      infiniteRestaurants: useInfiniteRestaurants(0, 3),
+      restaurants: useInfiniteRestaurants(0, 3),
       categories: computed(() => store.getters['restaurant_client/categories']),
 })
 
 
 const addRestaurants = (limitNew) => {
-      state.infiniteRestaurants = useInfiniteRestaurants(limitNew, 3)
+      state.restaurants = useInfiniteRestaurants(limitNew, 3)
 }
+
+// async function addRestaurants(limitNew) {
+//     try {
+//         const restaurantData = await useInfiniteRestaurants(limitNew, state.restaurants.length);
+//         restaurantData.forEach(restaurant => {
+//             state.restaurants.push(restaurant);
+//         });
+//     } catch (error) {
+//         console.error("Error loading restaurants:", error);
+//     }
+// }
+
+
 
 
 </script>
