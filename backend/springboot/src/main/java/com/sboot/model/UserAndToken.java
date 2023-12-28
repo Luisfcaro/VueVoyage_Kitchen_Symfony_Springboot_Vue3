@@ -1,11 +1,13 @@
 package com.sboot.model;
 
+import com.sboot.dto.UserDTO;
+
 public class UserAndToken {
 
   private String token;
-  private User user;
+  private UserDTO user;
 
-  public UserAndToken(String token, User user) {
+  public UserAndToken(String token, UserDTO user) {
     this.user = user;
     this.token = token;
   }
@@ -18,11 +20,11 @@ public class UserAndToken {
     this.token = token;
   }
 
-  public User getUser() {
+  public UserDTO getUser() {
     return user;
   }
 
-  public void setUser(User user) {
+  public void setUser(UserDTO user) {
     this.user = user;
   }
 

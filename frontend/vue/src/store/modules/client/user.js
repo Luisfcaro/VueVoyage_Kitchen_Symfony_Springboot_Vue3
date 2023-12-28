@@ -21,7 +21,6 @@ const actions = {
         try {
             await springbootApiService.post('/api/login', payload)
                 .then((response) => {
-                    console.log(response.data);
                     localStorage.setItem('jwt', response.data.token)
                     localStorage.setItem('isAdmin', false)
                     if (response.data.user.type == 'admin') {
@@ -29,20 +28,42 @@ const actions = {
                     }
                     store.commit(Constant.LOGIN_USER, response.data.user);
                 })
+            return true
         } catch (error) {
             console.error(error);
+            return false
+        }
+    },
+    [Constant.REGISTER_USER]: async (store, payload) => {
+        try {
+            await springbootApiService.post("/api/register", payload)
+                .then((res) => {
+                })
+            return true
+        } catch (error) {
+            console.error(error);
+            return false
         }
     },
     [Constant.GET_USER_LOGIN]: async (store) => {
         try {
             await springbootApiService.get('/api/profile')
                 .then((response) => {
-                    console.log(response);
                 })
         } catch (error) {
             console.error(error);
         }
 
+    },
+    [Constant.GET_USER_LOGOUT]: async (store) => {
+        try {
+            await springbootApiService.post('/api/logout')
+                .then((response) => {
+                })
+            localStorage.clear()
+        } catch (error) {
+            console.error(error);
+        }
     }
 };
 

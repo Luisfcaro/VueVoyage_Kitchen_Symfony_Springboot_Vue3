@@ -11,22 +11,23 @@
                                 </div>
                                 <div class="custom-form-group">
                                     <label class="text-uppercase" for="username">Username</label>
-                                    <input type="text" id="username" class="pb-1" /><span><font-awesome-icon
-                                            icon="user" /></span>
+                                    <input type="text" id="username" class="pb-1"
+                                        v-model="user.username" /><span><font-awesome-icon icon="user" /></span>
                                 </div>
                                 <div class="custom-form-group mt-3">
                                     <label class="text-uppercase" for="password">Password</label>
-                                    <input :type="passBlock ? 'password' : 'text'" id="password" class="pb-1" /><span
-                                        class="e" @click="passBlock = !passBlock"><font-awesome-icon
+                                    <input :type="passBlock ? 'password' : 'text'" id="password" class="pb-1"
+                                        v-model="user.password" /><span class="e"
+                                        @click="passBlock = !passBlock"><font-awesome-icon
                                             :icon="passBlock ? 'eye-slash' : 'eye'" /></span>
                                 </div>
                                 <div class="custom-form-group mt-3">
                                     <label class="text-uppercase" for="email">Email</label>
-                                    <input type="text" id="email" class="pb-1" /><span><font-awesome-icon
-                                            icon="envelope" /></span>
+                                    <input type="text" id="email" class="pb-1"
+                                        v-model="user.email" /><span><font-awesome-icon icon="envelope" /></span>
                                 </div>
                                 <div class="mt-5">
-                                    <button class="w-100 p-2 d-block custom-btn">Register</button>
+                                    <button class="w-100 p-2 d-block custom-btn" @click="register()">Register</button>
                                 </div>
                                 <hr>
                                 <router-link :to="{ name: 'login' }">Ya tienes cuenta?</router-link>
@@ -36,12 +37,53 @@
                 </div>
             </div>
         </div>
+        <notification v-for="(notification, index) in notifications" :key="index" :type="notification.type"
+            :message="notification.message" />
     </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { reactive, ref } from "vue";
+import { useStore } from "vuex";
+import Constant from "../Constant";
+import { useRouter } from 'vue-router';
+
+import NotificationService from '../core/services/NotificationService';
+import Notification from '../components/Notification.vue';
+const notifications = NotificationService.notifications
+
 const passBlock = ref(true)
+const store = useStore();
+
+const router = useRouter()
+
+const user = reactive({
+    username: "luis",
+    password: "123456",
+    email: "luis@gmail.com",
+    photo: "https://picsum.photos/200/300?random="
+})
+
+const formUser = (userData) => {
+    return {
+        username: userData.username,
+        password: userData.password,
+        email: userData.email,
+        photo: userData.photo + Math.floor(Math.random() * 100),
+    }
+}
+
+const register = async () => {
+    const res = await store.dispatch('user/' + Constant.REGISTER_USER, formUser(user))
+    if (res) {
+        NotificationService.addNotification('success', 'Operación exitosa');
+        setTimeout(() => {
+            router.push('/login')
+        }, 1000);
+    } else {
+        NotificationService.addNotification('error', 'Ocurrió un error');
+    }
+}
 </script>
 
 <style lang="scss" scoped>
