@@ -5,17 +5,39 @@
                 <img src="../../../assets/img/VueVoyage.png" alt="Logo del Restaurante" class="logo">
                 <div class="brand-title">VueVoyage</div>
             </div>
-            <ul class="menu-list">
+            <ul class="menu-list align-items-center">
                 <li><a href="/home">Home</a></li>
                 <li><a href="/shop">Reservas</a></li>
                 <li><a href="#">Contacto</a></li>
                 <li><router-link :to="{ name: 'login' }">Login</router-link></li>
+                <li class="nav-item dropdown profile">
+                    <div class="nav-link dropdown-toggle img-cont" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img class="profile-img rounded-circle" src="https://picsum.photos/id/684/600/400" alt="" width="40"
+                            height="40">
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item text-dark" href="#">Settings</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-dark" @click="logout()">LogOut</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
 </template>
 
 <script setup>
+import { useStore } from "vuex";
+import Constant from "../../../Constant"
+
+const store = useStore();
+
+const logout = () => {
+    store.dispatch('user/' + Constant.GET_USER_LOGOUT)
+}
 
 </script>
 
@@ -28,7 +50,7 @@ $text-color: #fff;
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 body {
-    font-family: 'Roboto', sans-serif; 
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -94,6 +116,13 @@ header {
             }
         }
     }
+
+    .profile {
+        .img-cont {
+            .profile-img {}
+        }
+    }
+
 }
 
 @media screen and (max-width: 768px) {

@@ -1,5 +1,6 @@
 package com.sboot.controller;
 
+import com.sboot.dto.UserDTO;
 import com.sboot.model.User;
 import com.sboot.model.UserAndToken;
 import com.sboot.repository.UserRepository;
@@ -8,6 +9,7 @@ import com.sboot.security.jwt.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +48,7 @@ public class UserController {
   private JwtUtils jwtUtils;
 
   @GetMapping("/profile")
-  public ResponseEntity<User> profile() {
+  public ResponseEntity<UserDTO> profile() {
     try {
       UserDetails userDetails = (UserDetails) SecurityContextHolder
         .getContext()
@@ -55,7 +57,10 @@ public class UserController {
       User user = UserRepository
         .findByUsername(userDetails.getUsername())
         .get();
-      return new ResponseEntity<>(user, HttpStatus.OK);
+
+      UserDTO userDTO = new UserDTO(user);
+
+      return new ResponseEntity<>(userDTO, HttpStatus.OK);
     } catch (Exception e) {
       System.err.println(e);
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -73,8 +78,9 @@ public class UserController {
       );
       SecurityContextHolder.getContext().setAuthentication(authentication);
       User user_ = UserRepository.findByUsername(user.getUsername()).get();
+      UserDTO userDTO = new UserDTO(user_);
       String jwt = jwtUtils.generateJwtToken(authentication, user_.getRT());
-      UserAndToken userToken = new UserAndToken(jwt, user_);
+      UserAndToken userToken = new UserAndToken(jwt, userDTO);
 
       return new ResponseEntity<>(userToken, HttpStatus.OK);
     } catch (Exception e) {
@@ -103,19 +109,28 @@ public class UserController {
     }
   }
 
-  // @PostMapping("/logout")
-  // public ResponseEntity<?> logoutUser(HttpServletRequest request) {
-  //   try {
-  //     String token = authTokenFilter.parseJwt(request);
-  //     if (BlacklistTokenRepository.TokenExist(token) == 0) {
-  //       BlacklistToken blacklistToken = new BlacklistToken();
-  //       blacklistToken.setToken(token);
-  //       BlacklistTokenRepository.save(blacklistToken);
-  //     }
-  //     return new ResponseEntity<>(HttpStatus.OK);
-  //   } catch (Exception e) {
-  //     System.err.println(e);
-  //     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-  //   }
-  // }
+  @PostMapping("/logout")
+  public ResponseEntity<?> logoutUser() {
+    try {
+      UserDetails userDetails = (UserDetails) SecurityContextHolder
+        .getContext()
+        .getAuthentication()
+        .getPrincipal();
+
+      String username = userDetails.getUsername();
+      String newRTValue = generateRandom20DigitValue();
+      UserRepository.updateRTByUsername(username, newRTValue);
+
+      return new ResponseEntity<>(HttpStatus.OK);
+    } catch (Exception e) {
+      System.err.println(e);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  private String generateRandom20DigitValue() {
+    Random random = new Random();
+    long randomValue = Math.abs(random.nextLong()) % 1_000_000_000_000_000_000L;
+    return String.format("%020d", randomValue);
+  }
 }
