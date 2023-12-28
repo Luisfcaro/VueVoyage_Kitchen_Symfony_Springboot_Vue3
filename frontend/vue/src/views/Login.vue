@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, computed } from "vue";
 import { useStore } from "vuex";
 import Constant from "../Constant";
 import { useRouter } from 'vue-router';
@@ -54,7 +54,11 @@ const router = useRouter()
 
 const user = reactive({
     username: "kevin",
-    password: "123456"
+    password: "123456",
+})
+
+const state = reactive({
+    isAdmin: computed(() => store.getters['user/isAdmin'])
 })
 
 const formData = () => {
@@ -70,7 +74,11 @@ const login = async () => {
     if (res) {
         NotificationService.addNotification('success', 'Operación exitosa');
         setTimeout(() => {
-            router.push('/home')
+            if (state.isAdmin == true) {
+                router.push('/admin/dashboard');
+            } else {
+                router.push('/home');
+            }
         }, 1000);
     } else {
         NotificationService.addNotification('error', 'Ocurrió un error');

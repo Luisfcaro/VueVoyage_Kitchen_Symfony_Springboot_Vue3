@@ -3,6 +3,7 @@ import springbootApiService from "../../../core/http/springboot.api.service";
 
 const state = {
     user: {},
+    isAdmin: false
 };
 
 
@@ -24,7 +25,9 @@ const actions = {
                     localStorage.setItem('jwt', response.data.token)
                     localStorage.setItem('isAdmin', false)
                     if (response.data.user.type == 'admin') {
+                        //peticion symfony
                         localStorage.setItem('isAdmin', true)
+                        state.isAdmin = true;
                     }
                     store.commit(Constant.LOGIN_USER, response.data.user);
                 })
@@ -69,7 +72,8 @@ const actions = {
 
 
 const getters = {
-    user: state => state.user
+    user: state => state.user,
+    isAdmin: state => state.isAdmin
 };
 
 export default {

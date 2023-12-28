@@ -1,5 +1,6 @@
 <template>
     <div>
+        <Filters :filters="filters_Url" @filters_apply="ApplyFilters" @deleteFilters="deleteAllFilters" />
         <Search />
         <div class="shop">
             <Shop_list :restaurants="state.restaurants">
@@ -22,6 +23,7 @@ import { useFiltersRestaurants } from '../../composables/restaurants/useRestaura
 import { useRestaurantsPaginate } from '../../composables/restaurants/useRestaurants'
 
 const route = useRoute()
+const router = useRouter()
 
 let filters_Url = reactive({
     categories: [],
