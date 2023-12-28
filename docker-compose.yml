@@ -9,6 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./backend/init.sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/init.sql/db:/var/lib/mysql
     networks:
       - symfony_net
       # - springboot_net
