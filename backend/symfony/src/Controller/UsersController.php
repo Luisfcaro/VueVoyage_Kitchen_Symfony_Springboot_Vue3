@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Repository\UsersRepository;
-use Doctrine\Persistence\ManagerRegistry;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 
 
@@ -23,15 +23,18 @@ class UsersController extends AbstractController
     private $jwtEncoder;
     private $usersRepository;
     private $passwordHasher;
+    private $entityManager;
 
     public function __construct(
         UserPasswordHasherInterface $passwordHasher,
         JWTEncoderInterface $jwtEncoder,
-        UsersRepository $usersRepository
+        UsersRepository $usersRepository,
+        EntityManagerInterface $entityManager,
     ) {
         $this->passwordHasher = $passwordHasher;
         $this->jwtEncoder = $jwtEncoder;
         $this->usersRepository = $usersRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -72,7 +75,6 @@ class UsersController extends AbstractController
                 'message' => 'Autenticación exitosa',
                 'Bearer' => $bearer
             ]);
-
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Error al procesar la solicitud', 'message' => $e->getMessage()], 500);
         }
@@ -100,13 +102,19 @@ class UsersController extends AbstractController
                 return new JsonResponse(['error' => 'Token no válido'], 401);
             }
 
+            // Generar un nuevo valor aleatorio para rt
+            $newRt = bin2hex(random_bytes(10));
+            $user->setRt($newRt);
+
+            // Guardar el cambio en la base de datos
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             return new JsonResponse([
                 'status' => 200,
                 'message' => 'Sesión cerrada',
-                'Bearer' => $bearer
+                'Rt' => $newRt
             ]);
-
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Error al procesar la solicitud', 'message' => $e->getMessage()], 500);
         }
@@ -136,5 +144,175 @@ class UsersController extends AbstractController
             return new JsonResponse(['error' => 'Error al procesar la solicitud', 'message' => $e->getMessage()], 500);
         }
     }
-        
+
+
+
+
+
+    /**
+     * @Route("/users", name="get_users", methods={"GET"})
+     */
+    public function index(): Response
+    {
+        try {
+            $users = $this->usersRepository->findAll();
+
+            $data = [];
+            foreach ($users as $user) {
+                $data[] = $user->toArray();
+            }
+
+            return new JsonResponse([
+                'status' => 200,
+                'message' => 'success',
+                'users' => $data
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al recuperar los usuarios', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
+    /**
+     * @Route("/user/{id}", name="get_user", methods={"GET"})
+     */
+    public function show($id): Response
+    {
+        try {
+            $user = $this->usersRepository->find($id);
+
+            if (!$user instanceof Users) {
+                throw new \Exception('No se ha encontrado el usuario');
+            }
+
+            return new JsonResponse([
+                'status' => 200,
+                'message' => 'success',
+                'user' => $user->toArray()
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al recuperar el usuario', 'message' => $e->getMessage()], 404);
+        }
+    }
+
+
+    /**
+     * @Route("/user", name="create_user", methods={"POST"})
+     */
+    public function create(Request $request): Response
+    {
+        try {
+            $data = json_decode($request->getContent());
+
+            // Validar datos de entrada
+            if (empty($data->username) || empty($data->password) || empty($data->typeUser) || empty($data->email)) {
+                return new JsonResponse(['error' => 'Faltan datos de usuario y/o contraseña'], 400);
+            }
+
+            // Comprobar si el usuario ya existe
+            $user = $this->usersRepository->findOneBy(['username' => $data->username]);
+
+            if ($user) {
+                return new JsonResponse(['error' => 'El usuario ya existe'], 400);
+            }
+
+            // Crear el usuario
+            $user = new Users();
+            $user->setUsername($data->username);
+            $user->setPassword($this->passwordHasher->hashPassword($user, $data->password));
+            $user->setEmail($data->email);
+            $user->setTypeUser($data->typeUser);
+            $user->setIsActive(true);
+            $user->setPhoto($data->photo);
+            $user->setRt(bin2hex(random_bytes(10)));
+
+            // Guardar el usuario en la base de datos
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            return new JsonResponse([
+                'status' => 200,
+                'message' => 'Usuario creado',
+                'user' => $user->toArray()
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al crear el usuario', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
+    /**
+     * @Route("/user/{id}", name="update_user", methods={"PUT"})
+     */
+    public function update($id, Request $request): Response
+    {
+        try {
+            $data = json_decode($request->getContent());
+
+            // Validar datos de entrada
+            if (empty($data->username) || empty($data->typeUser) || empty($data->password) || empty($data->email)) {
+                return new JsonResponse(['error' => 'Faltan datos de usuario y/o contraseña'], 400);
+            }
+
+            // Comprobar si el usuario ya existe
+            $user = $this->usersRepository->findOneBy(['username' => $data->username]);
+
+            if ($user && $user->getId() != $id) {
+                return new JsonResponse(['error' => 'El usuario ya existe'], 400);
+            }
+
+            // Buscar el usuario
+            $user = $this->usersRepository->find($id);
+
+            if (!$user instanceof Users) {
+                throw new \Exception('No se ha encontrado el usuario');
+            }
+
+            // Actualizar el usuario
+            $user->setUsername($data->username);
+            $user->setPassword($this->passwordHasher->hashPassword($user, $data->password));
+            $user->setEmail($data->email);
+            $user->setPhoto($data->photo);
+            $user->setTypeUser($data->typeUser);
+
+            // Guardar el usuario en la base de datos
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            return new JsonResponse([
+                'status' => 200,
+                'message' => 'Usuario actualizado',
+                'user' => $user->toArray()
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al actualizar el usuario', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
+    /**
+     * @Route("/user/{id}", name="delete_user", methods={"DELETE"})
+     */
+    public function delete($id): Response
+    {
+        try {
+            // Buscar el usuario
+            $user = $this->usersRepository->find($id);
+
+            if (!$user instanceof Users) {
+                throw new \Exception('No se ha encontrado el usuario');
+            }
+
+            // Eliminar el usuario
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
+
+            return new JsonResponse([
+                'status' => 200,
+                'message' => 'Usuario eliminado'
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al eliminar el usuario', 'message' => $e->getMessage()], 500);
+        }
+    }
 }

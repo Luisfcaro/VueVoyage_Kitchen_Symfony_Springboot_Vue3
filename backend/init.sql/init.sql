@@ -72,7 +72,7 @@ VALUES (
         'Sushi Express',
         'sushiexpress.jpg',
         '789 Calle Secundaria, Ciudad'
-    ),  (
+    ), (
         4,
         'Pasta Paradise',
         'pastaparadise.jpg',
@@ -117,19 +117,28 @@ VALUES (1, 'Italiana', 'italiana.jpg'), (
         2,
         'Argentina',
         'argentina.jpg'
-    ), (3, 'Japonesa', 'japonesa.jpg'), 
-    (4, 'Americana', 'americana.jpg'),
-    (5, 'Mexicana', 'mexicana.jpg'),
-    (6, 'India', 'india.jpg'),
-    (7, 'Vegetariana', 'vegetariana.jpg'),
-    (8, 'Francesa', 'francesa.jpg'),
-    (9, 'China', 'china.jpg'),
-    (10, 'Mediterránea', 'mediterranea.jpg');
+    ), (3, 'Japonesa', 'japonesa.jpg'), (
+        4,
+        'Americana',
+        'americana.jpg'
+    ), (5, 'Mexicana', 'mexicana.jpg'), (6, 'India', 'india.jpg'), (
+        7,
+        'Vegetariana',
+        'vegetariana.jpg'
+    ), (8, 'Francesa', 'francesa.jpg'), (9, 'China', 'china.jpg'), (
+        10,
+        'Mediterránea',
+        'mediterranea.jpg'
+    );
 
 -- Insertar datos en la tabla rest_cat
 
 INSERT INTO
-    restaurant_category (restaurant_id, category_id, desc_rest_cat)
+    restaurant_category (
+        restaurant_id,
+        category_id,
+        desc_rest_cat
+    )
 VALUES (
         1,
         1,
@@ -142,14 +151,35 @@ VALUES (
         3,
         3,
         'Variedad de sushi fresco y delicioso'
-    ),
-    (4, 1, 'Experiencia italiana con un toque moderno'),
-    (5, 4, 'Hamburguesas clásicas y creativas'),
-    (6, 5, 'Los mejores tacos al estilo del norte'),
-    (7, 6, 'Sabores auténticos de la India'),
-    (8, 7, 'Deliciosas opciones vegetarianas'),
-    (9, 8, 'Cocina francesa refinada y elegante'),
-    (10, 9, 'Pizzas al estilo tradicional y contemporáneo');
+    ), (
+        4,
+        1,
+        'Experiencia italiana con un toque moderno'
+    ), (
+        5,
+        4,
+        'Hamburguesas clásicas y creativas'
+    ), (
+        6,
+        5,
+        'Los mejores tacos al estilo del norte'
+    ), (
+        7,
+        6,
+        'Sabores auténticos de la India'
+    ), (
+        8,
+        7,
+        'Deliciosas opciones vegetarianas'
+    ), (
+        9,
+        8,
+        'Cocina francesa refinada y elegante'
+    ), (
+        10,
+        9,
+        'Pizzas al estilo tradicional y contemporáneo'
+    );
 
 -- Insertar datos en la tabla Tables
 
@@ -180,8 +210,8 @@ VALUES (1, 1, 4, 'Disponible'), (2, 1, 6, 'Ocupada'), (3, 2, 8, 'Disponible'), (
 INSERT INTO users (username, password, email, type_user, is_active, photo, RT)
 VALUES
     ('admin', '$2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa', 'admin@gmail.com', 'admin', TRUE, 'admin.jpg', 'patata'),
-    ('kevin', 'kevinaris', 'kevin@gmail.com', 'admin', TRUE, 'kevin.jpg', ''),
-    ('luis', 'luis', 'luis@gmail.com', 'admin', TRUE, 'luis.jpg', '');
+    ('kevin', 'kevinaris', 'kevin@gmail.com', 'admin', TRUE, 'kevin.jpg', 'tapa'),
+    ('luis', '2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa', 'luis@gmail.com', 'client', TRUE, 'luis.jpg', 'lapa');
 
 -- -- Insertar usuarios normales
 -- INSERT INTO users (username, password, email, type_user, is_active, photo)

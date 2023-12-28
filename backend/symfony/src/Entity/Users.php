@@ -123,4 +123,17 @@ class Users implements PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'username' => $this->getUsername(),
+            'email' => $this->getEmail(),
+            'type_user' => $this->getTypeUser(),
+            'is_active' => $this->isIsActive(),
+            'photo' => $this->getPhoto(),
+            'rt' => $this->getRt()
+        ];
+    }
 }
