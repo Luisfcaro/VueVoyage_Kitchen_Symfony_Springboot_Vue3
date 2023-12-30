@@ -60,52 +60,52 @@ INSERT INTO
 VALUES (
         1,
         'La Trattoria',
-        'latrattoria.jpg',
+        'https://picsum.photos/200/300?random=1',
         '123 Calle Principal, Ciudad'
     ), (
         2,
         'El Asador Argentino',
-        'elasador.jpg',
+        'https://picsum.photos/200/300?random=2',
         '456 Avenida Central, Ciudad'
     ), (
         3,
         'Sushi Express',
-        'sushiexpress.jpg',
+        'https://picsum.photos/200/300?random=3',
         '789 Calle Secundaria, Ciudad'
     ), (
         4,
         'Pasta Paradise',
-        'pastaparadise.jpg',
+        'https://picsum.photos/200/300?random=4',
         '1010 Avenida de las Flores, Ciudad'
     ), (
         5,
         'Burger Town',
-        'burgertown.jpg',
+        'https://picsum.photos/200/300?random=5',
         '1111 Plaza del Sol, Ciudad'
     ), (
         6,
         'Tacos del Norte',
-        'tacosdelnorte.jpg',
+        'https://picsum.photos/200/300?random=6',
         '1212 Calle del Bosque, Ciudad'
     ), (
         7,
         'The Curry House',
-        'curryhouse.jpg',
+        'https://picsum.photos/200/300?random=7',
         '1313 Calle de la Luna, Ciudad'
     ), (
         8,
         'Veggie Delights',
-        'veggiedelights.jpg',
+        'https://picsum.photos/200/300?random=8',
         '1414 Avenida del Mar, Ciudad'
     ), (
         9,
         'French Gourmet',
-        'frenchgourmet.jpg',
+        'https://picsum.photos/200/300?random=9',
         '1515 Boulevard Paris, Ciudad'
     ), (
         10,
         'Pizza World',
-        'pizzaworld.jpg',
+        'https://picsum.photos/200/300?random=10',
         '1616 Calle Nueva, Ciudad'
     );
 
@@ -113,22 +113,46 @@ VALUES (
 
 INSERT INTO
     categories (id, name_cat, img_cat)
-VALUES (1, 'Italiana', 'italiana.jpg'), (
+VALUES (
+        1,
+        'Italiana',
+        'https://picsum.photos/200/300?random=11'
+    ), (
         2,
         'Argentina',
-        'argentina.jpg'
-    ), (3, 'Japonesa', 'japonesa.jpg'), (
+        'https://picsum.photos/200/300?random=12'
+    ), (
+        3,
+        'Japonesa',
+        'https://picsum.photos/200/300?random=13'
+    ), (
         4,
         'Americana',
-        'americana.jpg'
-    ), (5, 'Mexicana', 'mexicana.jpg'), (6, 'India', 'india.jpg'), (
+        'https://picsum.photos/200/300?random=14'
+    ), (
+        5,
+        'Mexicana',
+        'https://picsum.photos/200/300?random=15'
+    ), (
+        6,
+        'India',
+        'https://picsum.photos/200/300?random=16'
+    ), (
         7,
         'Vegetariana',
-        'vegetariana.jpg'
-    ), (8, 'Francesa', 'francesa.jpg'), (9, 'China', 'china.jpg'), (
+        'https://picsum.photos/200/300?random=17'
+    ), (
+        8,
+        'Francesa',
+        'https://picsum.photos/200/300?random=18'
+    ), (
+        9,
+        'China',
+        'https://picsum.photos/200/300?random=19'
+    ), (
         10,
         'Mediterránea',
-        'mediterranea.jpg'
+        'https://picsum.photos/200/300?random=20'
     );
 
 -- Insertar datos en la tabla rest_cat

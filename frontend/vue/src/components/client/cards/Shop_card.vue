@@ -1,16 +1,19 @@
 <template>
-
     <section class="dark">
         <div class="container py-4">
             <article class="postcard dark blue">
-                <a class="postcard__img_link" href="#">
-                    <img class="postcard__img" src="../../../assets/img/latrattoria.jpg" alt="Image Title" />
-                </a>
+                <router-link class="postcard__img_link" :to="{ name: 'restaurant', params: { id: restaurant.id } }">
+                    <img class="postcard__img" :src="restaurant.img" alt="Image Title" />
+                </router-link>
                 <div class="postcard__text">
-                    <h1 class="postcard__title blue"><a href="#">{{ restaurant.name }}</a></h1>
+                    <h1 class="postcard__title blue">
+                        <router-link :to="{ name: 'restaurant', params: { id: restaurant.id } }">
+                            {{ restaurant.name }}
+                        </router-link>
+                    </h1>
                     <div class="postcard__subtitle small">
                         <time datetime="2020-05-25 12:00:00">
-                            <i class="fas fa-calendar-alt mr-2"></i>{{ restaurant.location  }}
+                            <i class="fas fa-calendar-alt mr-2"></i>{{ restaurant.location }}
                         </time>
                     </div>
                     <div class="postcard__bar"></div>
@@ -26,50 +29,49 @@
             </article>
         </div>
     </section>
-
 </template>
 
 <script setup>
-    
-    const props = defineProps([
-        'restaurant'
-    ]);
+
+const props = defineProps([
+    'restaurant'
+]);
 
 </script>
 
 <style scoped lang="scss">
-
 @import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
-    $main-blue: #0076bd !default;
-    $main-blue-rgb-015: rgba(0, 118, 189, 0.1) !default;
+$main-blue: #0076bd !default;
+$main-blue-rgb-015: rgba(0, 118, 189, 0.1) !default;
 
-    /* This pen */
-    body {
-        font-family: "Baloo 2", cursive;
-        font-size: 16px;
-        color: #ffffff;
-        text-rendering: optimizeLegibility;
-        font-weight: initial;
-    }
+/* This pen */
+body {
+    font-family: "Baloo 2", cursive;
+    font-size: 16px;
+    color: #ffffff;
+    text-rendering: optimizeLegibility;
+    font-weight: initial;
+}
 
-    .dark {
-        background: #110f16;
-    }
-
-
-    a, a:hover {
-        text-decoration: none;
-        transition: color 0.3s ease-in-out;
-    }
+.dark {
+    background: #110f16;
+}
 
 
+a,
+a:hover {
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
 
 
- /* Cards */
- .postcard {
+
+
+/* Cards */
+.postcard {
     flex-wrap: wrap;
     display: flex;
-    
+
     box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.66);
     border-radius: 10px;
     margin: 0 0 2rem 0;
@@ -77,27 +79,28 @@
     position: relative;
     color: #ffffff;
 
-        &.dark {
-            background-color: #18151f;
-        }
-        
-        .t-dark {
-            color: #18151f;
-        }
-        
+    &.dark {
+        background-color: #18151f;
+    }
+
+    .t-dark {
+        color: #18151f;
+    }
+
     a {
         color: inherit;
     }
-        
-        h1,	.h1 {
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            line-height: 1.2;
-        }
-        
-        .small {
-            font-size: 80%;
-        }
+
+    h1,
+    .h1 {
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+    .small {
+        font-size: 80%;
+    }
 
     .postcard__title {
         font-size: 1.75rem;
@@ -142,22 +145,22 @@
         flex-flow: row wrap;
         font-size: 14px;
         margin: 20px 0 0 0;
-            padding: 0;
+        padding: 0;
         justify-content: center;
 
         .tag__item {
-        display: inline-block;
-        background: rgba(83, 83, 83, 0.4);
-        border-radius: 3px;
-        padding: 2.5px 10px;
-        margin: 0 5px 5px 0;
-        cursor: default;
-        user-select: none;
-        transition: background-color 0.3s;
+            display: inline-block;
+            background: rgba(83, 83, 83, 0.4);
+            border-radius: 3px;
+            padding: 2.5px 10px;
+            margin: 0 5px 5px 0;
+            cursor: default;
+            user-select: none;
+            transition: background-color 0.3s;
 
-        &:hover {
-            background: rgba(83, 83, 83, 0.8);
-        }
+            &:hover {
+                background: rgba(83, 83, 83, 0.8);
+            }
         }
     }
 
@@ -176,115 +179,118 @@
     &:hover .postcard__bar {
         width: 100px;
     }
-    }
+}
 
-    @media screen and (min-width: 769px) {
+@media screen and (min-width: 769px) {
     .postcard {
         flex-wrap: inherit;
 
         .postcard__title {
-        font-size: 2rem;
+            font-size: 2rem;
         }
 
         .postcard__tagbox {
-        justify-content: start;
+            justify-content: start;
         }
 
         .postcard__img {
-        max-width: 300px;
-        max-height: 100%;
-        transition: transform 0.3s ease;
+            max-width: 300px;
+            max-height: 300px;
+            transition: transform 0.3s ease;
         }
 
         .postcard__text {
-        padding: 3rem;
-        width: 100%;
+            padding: 3rem;
+            width: 100%;
         }
 
         .media.postcard__text:before {
-        content: "";
-        position: absolute;
-        display: block;
-        background: #18151f;
-        top: -20%;
-        height: 130%;
-        width: 55px;
+            content: "";
+            position: absolute;
+            display: block;
+            background: #18151f;
+            top: -20%;
+            height: 130%;
+            width: 55px;
         }
 
         &:hover .postcard__img {
-        transform: scale(1.1);
+            transform: scale(1.1);
         }
 
         &:nth-child(2n+1) {
-        flex-direction: row;
+            flex-direction: row;
         }
 
         &:nth-child(2n+0) {
-        flex-direction: row-reverse;
+            flex-direction: row-reverse;
         }
 
         &:nth-child(2n+1) .postcard__text::before {
-        left: -12px !important;
-        transform: rotate(4deg);
+            left: -12px !important;
+            transform: rotate(4deg);
         }
 
         &:nth-child(2n+0) .postcard__text::before {
-        right: -12px !important;
-        transform: rotate(-4deg);
+            right: -12px !important;
+            transform: rotate(-4deg);
         }
     }
-    }
-    @media screen and (min-width: 1024px){
-            .postcard__text {
+}
+
+@media screen and (min-width: 1024px) {
+    .postcard__text {
         padding: 2rem 3.5rem;
-        }
-            
-            .postcard__text:before {
+    }
+
+    .postcard__text:before {
         content: "";
         position: absolute;
         display: block;
-        
+
         top: -20%;
         height: 130%;
         width: 55px;
-        }
-        
+    }
+
     .postcard.dark {
-            .postcard__text:before {
-                background: #18151f;
-            }
+        .postcard__text:before {
+            background: #18151f;
+        }
     }
-    }
+}
 
-    /* COLORS */
+/* COLORS */
 
-    .postcard .postcard__tagbox .blue.play:hover {
-        background: $main-blue;
-    }
-    .blue .postcard__title:hover {
-        color: $main-blue;
-    }
-    .blue .postcard__bar {
-        background-color: $main-blue;
-    }
+.postcard .postcard__tagbox .blue.play:hover {
+    background: $main-blue;
+}
+
+.blue .postcard__title:hover {
+    color: $main-blue;
+}
+
+.blue .postcard__bar {
+    background-color: $main-blue;
+}
+
+.blue::before {
+    background-image: linear-gradient(-30deg, $main-blue-rgb-015, transparent 50%);
+}
+
+.blue:nth-child(2n)::before {
+    background-image: linear-gradient(30deg, $main-blue-rgb-015, transparent 50%);
+}
+
+
+@media screen and (min-width: 769px) {
     .blue::before {
-        background-image: linear-gradient(-30deg, $main-blue-rgb-015, transparent 50%);
-    }
-    .blue:nth-child(2n)::before {
-        background-image: linear-gradient(30deg, $main-blue-rgb-015, transparent 50%);
-    }
-
-
-    @media screen and (min-width: 769px) {
-        .blue::before {
-            background-image: linear-gradient(
-                -80deg,
+        background-image: linear-gradient(-80deg,
                 $main-blue-rgb-015,
-                transparent 50%
-            );
-        }
-        .blue:nth-child(2n)::before {
-            background-image: linear-gradient(80deg, $main-blue-rgb-015, transparent 50%);
-        }
+                transparent 50%);
     }
-</style>
+
+    .blue:nth-child(2n)::before {
+        background-image: linear-gradient(80deg, $main-blue-rgb-015, transparent 50%);
+    }
+}</style>

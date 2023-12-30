@@ -7,11 +7,16 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Home from "../views/client/Home.vue";
 import Shop from "../views/client/Shop.vue";
+import RestaurantClient from "../views/client/Restaurant.vue";
 
 const routes = [
   {
     path: "/",
-    name: "home",
+    redirect: "/home",
+  },
+  {
+    path: "/",
+    name: "client",
     component: () => import("../views/client/App.vue"),
     children: [
       {
@@ -39,9 +44,13 @@ const routes = [
         name: "shop_filter",
         component: Shop
       },
+      {
+        path: "restaurant/:id",
+        name: "restaurant",
+        component: RestaurantClient,
+      },
     ]
   },
-
   {
     path: "/admin",
     name: "admin",
