@@ -6,15 +6,26 @@
                 <div class="brand-title">VueVoyage</div>
             </div>
             <ul class="menu-list align-items-center">
-                <li><a href="/home">Home</a></li>
-                <li><a href="/shop">Reservas</a></li>
+                <li>
+                    <router-link :to="{ name: 'home' }">
+                        Home
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{ name: 'shop' }">
+                        Reservas
+                    </router-link>
+                </li>
                 <li><a href="#">Contacto</a></li>
-                <li><router-link :to="{ name: 'login' }">Login</router-link></li>
-                <li class="nav-item dropdown profile">
+                <li v-if="Object.entries(state.user).length == 0">
+                    <router-link :to="{ name: 'login' }">
+                        Login
+                    </router-link>
+                </li>
+                <li v-if="Object.entries(state.user).length != 0" class="nav-item dropdown profile">
                     <div class="nav-link dropdown-toggle img-cont" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        <img class="profile-img rounded-circle" src="https://picsum.photos/id/684/600/400" alt="" width="40"
-                            height="40">
+                        <img class="profile-img rounded-circle" :src="state.user.photo" alt="" width="40" height="40">
                     </div>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item text-dark" href="#">Settings</a></li>
@@ -30,10 +41,15 @@
 </template>
 
 <script setup>
+import { computed, reactive } from "vue";
 import { useStore } from "vuex";
 import Constant from "../../../Constant"
 
 const store = useStore();
+
+const state = reactive({
+    user: computed(() => store.getters['user/user'])
+})
 
 const logout = () => {
     store.dispatch('user/' + Constant.GET_USER_LOGOUT)

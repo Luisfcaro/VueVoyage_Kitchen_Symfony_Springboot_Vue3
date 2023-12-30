@@ -49,11 +49,13 @@ const actions = {
         try {
             await springbootApiService.get('/api/profile')
                 .then((response) => {
+                    store.commit(Constant.LOGIN_USER, response.data);
                 })
         } catch (error) {
-            console.error(error);
+            localStorage.clear()
+            store.commit(Constant.LOGIN_USER, {});
+            // console.error(error);
         }
-
     },
     [Constant.GET_USER_LOGOUT]: async (store) => {
         try {
@@ -61,6 +63,7 @@ const actions = {
                 .then((response) => {
                 })
             localStorage.clear()
+            store.commit(Constant.LOGIN_USER, {});
         } catch (error) {
             console.error(error);
         }

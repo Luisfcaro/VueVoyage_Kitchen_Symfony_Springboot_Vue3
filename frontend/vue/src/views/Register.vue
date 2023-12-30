@@ -58,9 +58,9 @@ const store = useStore();
 const router = useRouter()
 
 const user = reactive({
-    username: "luis",
+    username: "kevin",
     password: "123456",
-    email: "luis@gmail.com",
+    email: "kevin@gmail.com",
     photo: "https://picsum.photos/200/300?random="
 })
 

@@ -6,7 +6,11 @@ import Constant from './Constant';
 
 const store = useStore();
 const isSidebarOpen = computed(() => store.getters['sidebar/isSidebarOpen'])
-store.dispatch('user/' + Constant.GET_USER_LOGIN)
+
+if (localStorage.getItem('jwt')) {
+  store.dispatch('user/' + Constant.GET_USER_LOGIN)
+}
+
 </script>
 
 <template>
