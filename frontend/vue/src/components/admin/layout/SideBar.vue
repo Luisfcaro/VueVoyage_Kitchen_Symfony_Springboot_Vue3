@@ -37,6 +37,15 @@
                             Categories
                         </router-link>
                     </li>
+                    <li>
+                        <router-link :to="{ name: 'dashUsers' }" class="nav-link d-flex"
+                            :class="{ 'active': currentRouteName === 'dashUsers' }" aria-current="page">
+                            <div class="icon me-3">
+                                <font-awesome-icon icon="closed-captioning" />
+                            </div>
+                            Users
+                        </router-link>
+                    </li>
                 </ul>
                 <hr>
                 <div class="dropdown p-1">

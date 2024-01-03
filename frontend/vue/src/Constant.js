@@ -40,5 +40,15 @@ export default {
     LOGIN_USER: "LoginUser",
     REGISTER_USER: "RegisterUser",
     GET_USER_LOGIN: "GetUserLogin",
-    GET_USER_LOGOUT: "LogOut"
+    GET_USER_LOGOUT: "LogOut",
+
+    ///////////////////////////////////////////////////ADMIN///////////////////////////////////////////////////////
+
+    // USERS
+    GET_ALL_USERS: "GetUsers",
+    GET_ONE_USER: "GetOneUser",
+    ADD_USER: "AddUser",
+    DELETE_USER: "DeleteUser",
+    UPDATE_USER: "UpdateUser",
+    
 }

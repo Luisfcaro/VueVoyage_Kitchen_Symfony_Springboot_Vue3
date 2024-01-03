@@ -7,6 +7,8 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Home from "../views/client/Home.vue";
 import Shop from "../views/client/Shop.vue";
+import Users from "../views/admin/Users.vue";
+import User from "../views/admin/User.vue";
 import RestaurantClient from "../views/client/Restaurant.vue";
 
 const routes = [
@@ -75,6 +77,16 @@ const routes = [
         path: "dashboard/:idRestaurant/categories",
         name: "categoriesRestaurnat",
         component: CategoriesRestaurant
+      },
+      {
+        path: "dashboard/users",
+        name: "dashUsers",
+        component: Users,
+      },
+      {
+        path: "dashboard/users/:idUser",
+        name: "dashUser",
+        component: User,
       }
     ]
   }
