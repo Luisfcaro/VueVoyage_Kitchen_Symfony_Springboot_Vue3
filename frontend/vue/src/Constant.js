@@ -40,5 +40,11 @@ export default {
     LOGIN_USER: "LoginUser",
     REGISTER_USER: "RegisterUser",
     GET_USER_LOGIN: "GetUserLogin",
-    GET_USER_LOGOUT: "LogOut"
+    GET_USER_LOGOUT: "LogOut",
+
+    ////////////////////////////////////////////////BOOKIGS/////////////////////////////////////////////////////
+
+    CHECK_TURNS_AVAIBLES: "CheckTurnsAvaibles",
+    MAKE_RESERVE: "MakeReserve",
+    DELETE_BOOKING: "DeleteBooking"
 }

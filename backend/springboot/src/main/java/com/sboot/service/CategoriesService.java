@@ -3,7 +3,6 @@ package com.sboot.service;
 import com.sboot.model.Categories;
 import com.sboot.repository.CategoriesRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

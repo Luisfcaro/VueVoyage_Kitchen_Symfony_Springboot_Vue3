@@ -46,8 +46,35 @@ CREATE TABLE
         email VARCHAR(128) UNIQUE,
         type_user VARCHAR(64),
         is_active BOOL DEFAULT TRUE,
-        photo VARCHAR(256),
+        photo VARCHAR(255),
         RT VARCHAR(20)
+    );
+
+CREATE TABLE
+    bookings (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        id_user INT,
+        id_rest INT,
+        id_turn INT,
+        people INT,
+        state VARCHAR(255),
+        date DATE
+    );
+
+CREATE TABLE
+    turns (
+        id INT PRIMARY KEY,
+        type_turn VARCHAR(255),
+        hora VARCHAR(255)
+    ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE
+    bookings_tables (
+        id_table INT,
+        id_booking INT,
+        PRIMARY KEY (id_table, id_booking),
+        FOREIGN KEY (id_table) REFERENCES tables(id_table),
+        FOREIGN KEY (id_booking) REFERENCES bookings(id)
     );
 
 INSERT INTO
@@ -214,4 +241,95 @@ INSERT INTO
         capacity_table,
         status_table
     )
-VALUES (1, 1, 4, 'Disponible'), (2, 1, 6, 'Ocupada'), (3, 2, 8, 'Disponible'), (4, 3, 5, 'Ocupada'), (5, 4, 4, 'Disponible'), (6, 4, 2, 'Ocupada'), (7, 5, 4, 'Disponible'), (8, 5, 6, 'Ocupada'), (9, 6, 4, 'Disponible'), (10, 6, 8, 'Ocupada'), (11, 7, 6, 'Disponible'), (12, 7, 2, 'Ocupada'), (13, 8, 4, 'Disponible'), (14, 8, 6, 'Ocupada'), (15, 9, 8, 'Disponible'), (16, 9, 5, 'Ocupada'), (17, 10, 4, 'Disponible'), (18, 10, 6, 'Ocupada');
+VALUES (1, 1, 4, 'Disponible'), (2, 1, 6, 'Ocupada'), (3, 2, 8, 'Disponible'), (4, 3, 5, 'Disponible'), (4, 3, 2, 'Ocupada'), (4, 3, 4, 'Ocupada'), (4, 3, 5, 'Disponible'), (4, 3, 6, 'Disponible'), (5, 4, 4, 'Disponible'), (6, 4, 2, 'Ocupada'), (7, 5, 4, 'Disponible'), (8, 5, 6, 'Ocupada'), (9, 6, 4, 'Disponible'), (10, 6, 8, 'Ocupada'), (11, 7, 6, 'Disponible'), (12, 7, 2, 'Ocupada'), (13, 8, 4, 'Disponible'), (14, 8, 6, 'Ocupada'), (15, 9, 8, 'Disponible'), (16, 9, 5, 'Ocupada'), (17, 10, 4, 'Disponible'), (18, 10, 6, 'Ocupada');
+
+-- Insertar un usuario administrador
+INSERT INTO
+    users (
+        username,
+        password,
+        email,
+        type_user,
+        is_active,
+        photo,
+        RT
+    )
+VALUES (
+        'admin',
+        '$2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa',
+        'admin@gmail.com',
+        'admin',
+        TRUE,
+        'admin.jpg',
+        'patata'
+    ), (
+        'kevin',
+        '$2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa',
+        'kevin@gmail.com',
+        'admin',
+        TRUE,
+        'https://avatars.githubusercontent.com/u/90612916?v=4',
+        'tapa'
+    ), (
+        'luis',
+        '$2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa',
+        'luis@gmail.com',
+        'client',
+        TRUE,
+        'luis.jpg',
+        'lapa'
+    );
+
+INSERT INTO
+    turns (id, type_turn, hora)
+VALUES (1, 'Mañana', '09:00'), (2, 'Tarde', '13:00'), (3, 'Noche', '19:00');
+
+INSERT INTO
+    bookings (
+        id_user,
+        id_rest,
+        id_turn,
+        people,
+        state,
+        date
+    )
+VALUES (
+        1,
+        1,
+        1,
+        4,
+        'Confirmada',
+        '2024-01-15'
+    ), (
+        2,
+        2,
+        2,
+        2,
+        'Pendiente',
+        '2024-01-15'
+    ), (
+        3,
+        3,
+        3,
+        6,
+        'Confirmada',
+        '2024-01-15'
+    ), (
+        1,
+        4,
+        1,
+        3,
+        'Cancelada',
+        '2024-01-15'
+    ), (
+        2,
+        5,
+        2,
+        5,
+        'Confirmada',
+        '2024-01-15'
+    );
+
+INSERT INTO
+    bookings_tables (id_table, id_booking)
+VALUES (1, 1), (3, 2), (9, 3), (10, 3), (11, 4), (7, 5);

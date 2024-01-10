@@ -1,15 +1,10 @@
 package com.sboot.service;
 
-import com.sboot.model.Categories;
 import com.sboot.model.Restaurants;
 import com.sboot.repository.RestaurantsRepository;
-import com.sboot.dto.CategoryDTO;
-import com.sboot.model.RestQueryParams;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;

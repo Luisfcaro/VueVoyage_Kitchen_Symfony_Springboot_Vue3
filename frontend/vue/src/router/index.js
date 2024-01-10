@@ -8,6 +8,7 @@ import Register from "../views/Register.vue";
 import Home from "../views/client/Home.vue";
 import Shop from "../views/client/Shop.vue";
 import RestaurantClient from "../views/client/Restaurant.vue";
+import SettingsClient from "../views/client/Settings.vue";
 
 const routes = [
   {
@@ -49,6 +50,11 @@ const routes = [
         name: "restaurant",
         component: RestaurantClient,
       },
+      {
+        path: 'settings',
+        name: 'settings',
+        component: SettingsClient
+      }
     ]
   },
   {
