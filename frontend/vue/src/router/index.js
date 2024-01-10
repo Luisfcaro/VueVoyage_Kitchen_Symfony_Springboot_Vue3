@@ -10,6 +10,7 @@ import Shop from "../views/client/Shop.vue";
 import Users from "../views/admin/Users.vue";
 import User from "../views/admin/User.vue";
 import RestaurantClient from "../views/client/Restaurant.vue";
+import SettingsClient from "../views/client/Settings.vue";
 
 const routes = [
   {
@@ -51,6 +52,11 @@ const routes = [
         name: "restaurant",
         component: RestaurantClient,
       },
+      {
+        path: 'settings',
+        name: 'settings',
+        component: SettingsClient
+      }
     ]
   },
   {

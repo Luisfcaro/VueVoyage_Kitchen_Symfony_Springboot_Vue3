@@ -4,6 +4,7 @@ import restaurant from './modules/admin/restaurant'
 import restaurant_client from './modules/client/restaurant_client';
 import user from './modules/client/user';
 import user_admin from './modules/admin/user_admin';
+import bookings_client from './modules/client/bookings_client';
 
 const store = createStore({
     modules: {
@@ -12,6 +13,7 @@ const store = createStore({
         restaurant_client,
         user,
         user_admin,
+        bookings_client
     }
 });
 

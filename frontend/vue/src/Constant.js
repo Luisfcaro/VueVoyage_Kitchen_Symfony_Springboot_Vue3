@@ -51,4 +51,9 @@ export default {
     DELETE_USER: "DeleteUser",
     UPDATE_USER: "UpdateUser",
     
+    ////////////////////////////////////////////////BOOKIGS/////////////////////////////////////////////////////
+
+    CHECK_TURNS_AVAIBLES: "CheckTurnsAvaibles",
+    MAKE_RESERVE: "MakeReserve",
+    DELETE_BOOKING: "DeleteBooking"
 }

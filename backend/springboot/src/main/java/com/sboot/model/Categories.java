@@ -1,10 +1,8 @@
 package com.sboot.model;
 
 import jakarta.persistence.*;
-import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
-import com.sboot.model.Restaurants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
