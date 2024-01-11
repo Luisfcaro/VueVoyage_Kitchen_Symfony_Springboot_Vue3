@@ -50,7 +50,6 @@ CREATE TABLE
         RT VARCHAR(20)
     );
 
-
 CREATE TABLE
     bookings (
         id INT PRIMARY KEY AUTO_INCREMENT,

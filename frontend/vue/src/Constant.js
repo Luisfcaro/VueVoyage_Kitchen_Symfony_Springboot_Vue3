@@ -63,4 +63,9 @@ export default {
     GET_ALL_TURNS: "GetAllTurns",
     ADD_TABLE_BOOKING: "AddTableBooking",
     REMOVE_TABLE_BOOKING: "RemoveTableBooking",
+    ////////////////////////////////////////////////BOOKIGS/////////////////////////////////////////////////////
+
+    CHECK_TURNS_AVAIBLES: "CheckTurnsAvaibles",
+    MAKE_RESERVE: "MakeReserve",
+    DELETE_BOOKING: "DeleteBooking"
 }

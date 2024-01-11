@@ -61,8 +61,7 @@
                                     data-bs-target="#modalId">Comprobar
                                     disponibilidad</a>
                                 <div v-if="Object.entries(state.user) == 0">
-                                    <router-link :to="{ name: 'login' }"
-                                        class="btn btn-primary mb-1">
+                                    <router-link :to="{ name: 'login' }" class="btn btn-primary mb-1">
                                         Login / Register
                                     </router-link>
                                     <p>Inicia sesion para reservar</p>
@@ -98,21 +97,26 @@
                                                     <button type="button" class="btn btn-secondary me-2"
                                                         @click="checkShifts()">Comprobar</button>
                                                 </div>
-                                                <div v-if="avaiable">
+                                                <div v-if="state.turnsAvaibles.length > 0">
                                                     <hr>
                                                     <div class="mb-3">
                                                         <label for="reservationTime" class="form-label">Hora de
                                                             reserva</label>
                                                         <select class="form-select" id="reservationTime"
-                                                            name="reservationTime" required>
-                                                            <option value="1">08:00 AM</option>
-                                                            <option value="2">09:00 AM</option>
+                                                            name="reservationTime" v-model="state.shiftPick" required>
+                                                            <option :value="turn.id"
+                                                                v-for="(turn, key) in state.turnsAvaibles" :key="key">
+                                                                {{ turn.hora }}</option>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
                                                         <button type="button" class="btn btn-primary"
                                                             @click="reserve()">Reservar</button>
                                                     </div>
+                                                </div>
+                                                <div v-else>
+                                                    <hr>
+                                                    No hay turnos disponibles para estos datos, intenta con otros
                                                 </div>
                                             </div>
                                         </div>
@@ -133,14 +137,22 @@
                 </div>
             </div>
         </section>
+        <notification v-for="(notification, index) in notifications" :key="index" :type="notification.type"
+            :message="notification.message" />
     </div>
 </template>
 
 <script setup>
-import { computed, reactive, ref, toRefs } from 'vue';
+import { computed, getCurrentInstance, reactive, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { useRestaurantDetails } from '../../composables/restaurants/useRestaurant';
+import Constant from '../../Constant';
+
+import NotificationService from '../../core/services/NotificationService';
+import Notification from '../../components/Notification.vue';
+const notifications = NotificationService.notifications
+
 
 import { formData } from "../../utils"
 
@@ -153,20 +165,33 @@ const state = reactive({
     restaurant: useRestaurantDetails(idRestaurant),
     datePick: {
         people: 1,
-        date: new Date().toISOString().split('T')[0]
+        date: new Date().toISOString().split('T')[0],
+        rest: parseInt(idRestaurant)
     },
     shiftPick: 1,
-    user: computed(() => store.getters['user/user'])
+    user: computed(() => store.getters['user/user']),
+    turnsAvaibles: computed(() => store.getters['bookings_client/turnsAvaibles'])
 })
 
-const avaiable = ref(false)
-
-const checkShifts = () => {
-    console.log(formData(state.datePick));
+const checkShifts = async () => {
+    store.dispatch('bookings_client/' + Constant.CHECK_TURNS_AVAIBLES, formData(state.datePick))
 }
 
-const reserve = () => {
-    console.log({ datePick: formData(state.datePick), shift: state.shiftPick })
+const reserve = async () => {
+    let body = formData(state.datePick)
+    body.shift = state.shiftPick
+    let res = await store.dispatch('bookings_client/' + Constant.MAKE_RESERVE, body)
+    if (res) {
+        NotificationService.addNotification('success', 'Operación exitosa');
+        setTimeout(() => {
+            window.location.reload()
+        }, 1000);
+    } else {
+        NotificationService.addNotification('error', 'Ocurrió un error')
+        setTimeout(() => {
+            window.location.reload()
+        }, 1000);
+    }
 }
 
 </script>

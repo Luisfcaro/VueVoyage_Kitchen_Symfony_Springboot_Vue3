@@ -13,6 +13,8 @@ import Bookings from "../views/admin/Bookings.vue";
 import Booking from "../views/admin/Booking.vue";
 import TablesOfBooking from "../views/admin/TablesOfBooking.vue";
 import RestaurantClient from "../views/client/Restaurant.vue";
+import SettingsClient from "../views/client/Settings.vue";
+import AuthGuards from "../core/guards/AuthGuard"
 
 const routes = [
   {
@@ -54,6 +56,12 @@ const routes = [
         name: "restaurant",
         component: RestaurantClient,
       },
+      {
+        path: 'settings',
+        name: 'settings',
+        component: SettingsClient,
+        beforeEnter: AuthGuards.AuthGuard, meta: { requiresAuth: true }
+      }
     ]
   },
   {
@@ -106,7 +114,8 @@ const routes = [
         name: "TablesOfBooking",
         component: TablesOfBooking,
       }
-    ]
+    ],
+    beforeEnter: AuthGuards.authGuardAdmin, meta: { requiresAuth: true }
   }
 ];
 

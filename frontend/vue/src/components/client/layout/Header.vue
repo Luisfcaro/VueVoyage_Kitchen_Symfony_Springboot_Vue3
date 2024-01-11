@@ -28,7 +28,8 @@
                         <img class="profile-img rounded-circle" :src="state.user.photo" alt="" width="40" height="40">
                     </div>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item text-dark" href="#">Settings</a></li>
+                        <li><router-link :to="{ name: 'settings' }" class="dropdown-item text-dark">Settings</router-link>
+                        </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -44,8 +45,10 @@
 import { computed, reactive } from "vue";
 import { useStore } from "vuex";
 import Constant from "../../../Constant"
+import { useRouter } from "vue-router";
 
 const store = useStore();
+const router = useRouter();
 
 const state = reactive({
     user: computed(() => store.getters['user/user'])
@@ -53,6 +56,7 @@ const state = reactive({
 
 const logout = () => {
     store.dispatch('user/' + Constant.GET_USER_LOGOUT)
+    router.push('/')
 }
 
 </script>
