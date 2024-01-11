@@ -10,6 +10,8 @@ import Shop from "../views/client/Shop.vue";
 import Users from "../views/admin/Users.vue";
 import User from "../views/admin/User.vue";
 import RestaurantClient from "../views/client/Restaurant.vue";
+import SettingsClient from "../views/client/Settings.vue";
+import AuthGuards from "../core/guards/AuthGuard"
 
 const routes = [
   {
@@ -51,6 +53,12 @@ const routes = [
         name: "restaurant",
         component: RestaurantClient,
       },
+      {
+        path: 'settings',
+        name: 'settings',
+        component: SettingsClient,
+        beforeEnter: AuthGuards.AuthGuard, meta: { requiresAuth: true }
+      }
     ]
   },
   {
@@ -88,7 +96,8 @@ const routes = [
         name: "dashUser",
         component: User,
       }
-    ]
+    ],
+    beforeEnter: AuthGuards.authGuardAdmin, meta: { requiresAuth: true }
   }
 ];
 

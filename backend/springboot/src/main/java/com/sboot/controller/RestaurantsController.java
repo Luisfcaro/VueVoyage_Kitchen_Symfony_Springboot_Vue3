@@ -2,10 +2,6 @@ package com.sboot.controller;
 
 import com.sboot.model.Restaurants;
 import com.sboot.service.RestaurantsService;
-import com.sboot.repository.RestaurantsRepository;
-import com.sboot.dto.RestaurantDTO;
-import com.sboot.model.Categories;
-import com.sboot.dto.CategoryDTO;
 import com.sboot.model.RestQueryParams;
 
 
@@ -13,16 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.HashSet;
-import java.util.Arrays;
-import java.util.Set;
 
 
 @CrossOrigin(origins = "*")
@@ -32,7 +23,6 @@ public class RestaurantsController {
 
     @Autowired
     private RestaurantsService restaurantsService;
-    private RestaurantsRepository restaurantsRepository;
 
     @GetMapping()
 	public ResponseEntity<?> getAllRestaurants(@ModelAttribute RestQueryParams RestQueryParams) {

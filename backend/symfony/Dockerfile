@@ -2,7 +2,10 @@
 FROM php:8.1-cli
 
 # Instala las extensiones necesarias
-RUN docker-php-ext-install pdo_mysql
+RUN apt-get update && apt-get install -y \
+    zip \
+    unzip \
+    && docker-php-ext-install pdo_mysql
 
 # Configura el entorno
 WORKDIR /var/www/html
@@ -12,7 +15,7 @@ COPY . .
 
 # Instala las dependencias de Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --no-scripts --no-interaction
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-scripts --no-interaction
 
 # Descarga e instala Symfony CLI usando curl
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
