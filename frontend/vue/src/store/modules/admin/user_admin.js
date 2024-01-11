@@ -30,9 +30,13 @@ const mutations = {
         state.users.splice(index, 1);
         state.user = {}
     },
+    [Constant.GET_USER_LOGOUT_ADMIN]: (state) => {
+        state.isAdmin = false
+    },
     [Constant.INI_USER]: (state) => {
         state.user = {}
     }
+
 };
 
 const actions = {
@@ -79,6 +83,16 @@ const actions = {
             // console.log(payload);
             await symfonyApiService.delete('/user/' + payload.id).then(response => {
                 store.commit(Constant.DELETE_USER, payload)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    [Constant.GET_USER_LOGOUT_ADMIN]: async (store) => {
+        try{
+            await symfonyApiService.get('/logout').then(response => {
+                localStorage.clear()
+                store.commit(Constant.GET_USER_LOGOUT_ADMIN)
             })
         } catch (error) {
             console.log(error)

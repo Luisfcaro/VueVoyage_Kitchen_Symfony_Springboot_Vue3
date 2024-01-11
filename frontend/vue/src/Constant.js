@@ -50,5 +50,17 @@ export default {
     ADD_USER: "AddUser",
     DELETE_USER: "DeleteUser",
     UPDATE_USER: "UpdateUser",
+    GET_USER_LOGOUT_ADMIN: "LogOutAdmin",
     
+
+    // BOOKINGS
+    GET_ALL_BOOKINGS: "GetBookings",
+    GET_ONE_BOOKING: "GetOneBooking",
+    ADD_BOOKING: "AddBooking",
+    DELETE_BOOKING: "DeleteBooking",
+    UPDATE_BOOKING: "UpdateBooking",
+    GET_TABLES_NOTIN_BOOKING: "GetTablesNotInBooking",
+    GET_ALL_TURNS: "GetAllTurns",
+    ADD_TABLE_BOOKING: "AddTableBooking",
+    REMOVE_TABLE_BOOKING: "RemoveTableBooking",
 }

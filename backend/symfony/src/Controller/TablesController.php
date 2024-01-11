@@ -131,4 +131,31 @@ class TablesController extends AbstractController
             return new JsonResponse(['error' => 'Error al eliminar la mesa.'], 500);
         }
     }
+
+
+
+    /**
+     * @Route("/tables/{id_rest}/notInBooking", name="tables_of_rest_not_in_booking", methods={"GET", "POST"})
+     */
+    public function tablesOfRestNotInBooking(int $id_rest, TablesRepository $tablesRepository, Request $request): ?Response
+    {
+        try {
+
+            $jsonData = json_decode($request->getContent());
+
+            $fecha = $jsonData->date;
+            $id_turno = $jsonData->id_turno;
+
+            $tables = $tablesRepository->tablesOfRestNotInBooking($id_rest, $fecha, $id_turno);
+
+            $data = [];
+            foreach ($tables as $table) {
+                $data[] = $table;
+            }
+
+            return new JsonResponse($data, 200);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al recuperar datos de la tabla.', 'message' => $e->getMessage()], 500);
+        }
+    }
 }

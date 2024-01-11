@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TablesRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TablesRepository::class)]
@@ -25,6 +27,9 @@ class Tables
 
     #[ORM\Column(length: 50)]
     private ?string $status_table = null;
+
+    #[ORM\ManyToMany(targetEntity: Bookings::class, mappedBy: 'tables')]
+    private Collection $bookings;
 
     public function getIdTable(): ?int
     {

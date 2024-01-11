@@ -50,6 +50,35 @@ CREATE TABLE
         RT VARCHAR(20)
     );
 
+
+CREATE TABLE
+    bookings (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        id_user INT,
+        id_rest INT,
+        id_turn INT,
+        people INT,
+        state VARCHAR(255),
+        date DATE
+    );
+
+CREATE TABLE
+    turns (
+        id INT PRIMARY KEY,
+        type_turn VARCHAR(255),
+        hora VARCHAR(255)
+    ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE
+    bookings_tables (
+    id_table INT,
+    id_booking INT,
+    PRIMARY KEY (id_table, id_booking),
+    FOREIGN KEY (id_table) REFERENCES tables(id_table),
+    FOREIGN KEY (id_booking) REFERENCES bookings(id)
+    );
+
+
 INSERT INTO
     restaurant (
         id,
@@ -231,17 +260,62 @@ VALUES (1, 1, 4, 'Disponible'), (2, 1, 6, 'Ocupada'), (3, 2, 8, 'Disponible'), (
 
 
 -- Insertar un usuario administrador
-INSERT INTO users (username, password, email, type_user, is_active, photo, RT)
+INSERT INTO
+    users (
+        username,
+        password,
+        email,
+        type_user,
+        is_active,
+        photo,
+        RT
+    )
+VALUES (
+        'admin',
+        '$2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa',
+        'admin@gmail.com',
+        'admin',
+        TRUE,
+        'admin.jpg',
+        'patata'
+    ), (
+        'kevin',
+        '$2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa',
+        'kevin@gmail.com',
+        'admin',
+        TRUE,
+        'https://avatars.githubusercontent.com/u/90612916?v=4',
+        'tapa'
+    ), (
+        'luis',
+        '$2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa',
+        'luis@gmail.com',
+        'client',
+        TRUE,
+        'luis.jpg',
+        'lapa'
+    );
+
+
+INSERT INTO turns (id, type_turn, hora)
 VALUES
-    ('admin', '$2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa', 'admin@gmail.com', 'admin', TRUE, 'admin.jpg', 'patata'),
-    ('kevin', 'kevinaris', 'kevin@gmail.com', 'admin', TRUE, 'kevin.jpg', 'tapa'),
-    ('luis', '2a$10$OjVs/YFP1dEnd.XJDA6OQu9Z5VwLTn5BkDflls/ntlZ0hqFq3fXGa', 'luis@gmail.com', 'client', TRUE, 'luis.jpg', 'lapa');
+    (1, 'Mañana', '09:00'),
+    (2, 'Tarde', '13:00'),
+    (3, 'Noche', '19:00');
 
--- -- Insertar usuarios normales
--- INSERT INTO users (username, password, email, type_user, is_active, photo)
--- VALUES
---     ('johndoe', 'jonhdoe', 'johndoe@gmail.com', 'client', TRUE, 'johndoe.jpg'),
---     ('janedoe', 'janedoe', 'janedoe@gmail.com', 'client', TRUE, 'janedoe.jpg'),
---     ('bobsmith', 'bobsmith', 'bobsmith@gmail.com', 'client', TRUE, 'bobsmith.jpg'),
---     ('emilybrown', 'emilybrown', 'emilybrown@gmail.com', 'client', TRUE, 'emilybrown.jpg');
+INSERT INTO bookings (id_user, id_rest, id_turn, people, state, date)
+VALUES
+    (1, 1, 1, 4, 'Confirmada', '2021-05-01'),
+    (2, 2, 2, 2, 'Pendiente', '2021-05-01'),
+    (3, 6, 3, 6, 'Confirmada', '2021-05-01'),
+    (1, 7, 1, 3, 'Cancelada', '2021-05-02'),
+    (2, 5, 2, 5, 'Confirmada', '2021-05-02');
 
+INSERT INTO bookings_tables (id_table, id_booking)
+VALUES
+    (1, 1),
+    (3, 2),
+    (9, 3),
+    (10, 3),
+    (11, 4),
+    (7, 5);

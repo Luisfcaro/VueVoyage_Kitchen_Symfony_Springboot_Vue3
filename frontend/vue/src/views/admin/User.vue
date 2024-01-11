@@ -44,17 +44,10 @@ const changeUser = () => {
     idUser.value = route.params.idUser
     store.dispatch('user_admin/' + Constant.GET_ONE_USER, idUser.value)
 }
+
 changeUser()
 
 const user = reactive(computed(() => store.getters['user_admin/user']))
-
-// const deleteTable = (idTable) => {
-//     store.dispatch('restaurant/' + Constant.DELETE_TABLE, idTable)
-// };
-
-// const updateTable = (table) => {
-//     store.dispatch('restaurant/' + Constant.UPDATE_TABLE, table)
-// };
 
 const updateUser = (user) => {
     store.dispatch('user_admin/' + Constant.UPDATE_USER, user)

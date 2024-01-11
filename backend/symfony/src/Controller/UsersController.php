@@ -185,10 +185,19 @@ class UsersController extends AbstractController
                 throw new \Exception('No se ha encontrado el usuario');
             }
 
+            $data = $user->toArray();
+
+            // dd($user->getBookings()->toArray());
+
+            $data['bookings'] = [];
+            foreach ($user->getBookings() as $booking) {
+                $data['bookings'][] = $booking->toArray();
+            }
+
             return new JsonResponse([
                 'status' => 200,
                 'message' => 'success',
-                'user' => $user->toArray()
+                'user' => $data
             ]);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Error al recuperar el usuario', 'message' => $e->getMessage()], 404);

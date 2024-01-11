@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -35,6 +37,16 @@ class Users implements PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 20)]
     private ?string $rt = null;
+
+
+    #[ORM\OneToMany(targetEntity: Bookings::class, mappedBy: 'user')]
+    private Collection $bookings;
+
+
+    public function __construct()
+    {
+        $this->bookings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -123,6 +135,16 @@ class Users implements PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
+    /**
+     * @return Collection<int, Bookings>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
 
     public function toArray(): array
     {

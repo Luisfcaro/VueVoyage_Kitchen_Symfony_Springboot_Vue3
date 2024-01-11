@@ -9,6 +9,9 @@ import Home from "../views/client/Home.vue";
 import Shop from "../views/client/Shop.vue";
 import Users from "../views/admin/Users.vue";
 import User from "../views/admin/User.vue";
+import Bookings from "../views/admin/Bookings.vue";
+import Booking from "../views/admin/Booking.vue";
+import TablesOfBooking from "../views/admin/TablesOfBooking.vue";
 import RestaurantClient from "../views/client/Restaurant.vue";
 
 const routes = [
@@ -87,6 +90,21 @@ const routes = [
         path: "dashboard/users/:idUser",
         name: "dashUser",
         component: User,
+      },
+      {
+        path: "dashboard/bookings",
+        name: "dashBookings",
+        component: Bookings,
+      },
+      {
+        path: "dashboard/bookings/:idBooking",
+        name: "dashBooking",
+        component: Booking,
+      },
+      {
+        path: "dashboard/bookings/:idBooking/tables",
+        name: "TablesOfBooking",
+        component: TablesOfBooking,
       }
     ]
   }

@@ -46,22 +46,36 @@
                             Users
                         </router-link>
                     </li>
+                    <li>
+                        <router-link :to="{ name: 'dashBookings' }" class="nav-link d-flex"
+                            :class="{ 'active': currentRouteName === 'dashBookings' || currentRouteName === 'dashBooking' || currentRouteName === 'TablesOfBooking'}" aria-current="page">
+                            <div class="icon me-3">
+                                <font-awesome-icon icon="closed-captioning" />
+                            </div>
+                            Bookings
+                        </router-link>
+                    </li>
+
+                    <li v-if="currentRouteName === 'dashBooking'">
+                        <router-link class="nav-link text-white d-flex" :class="{ 'ms-3': isSidebarOpen }"
+                            :to="{ name: 'TablesOfBooking', params: { idBooking: route.params.idBooking } }">
+                            <div class="icon me-3">
+                                <font-awesome-icon icon="closed-captioning" />
+                            </div>
+                            Tables
+                        </router-link>
+                    </li>
                 </ul>
                 <hr>
                 <div class="dropdown p-1">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-3">
-                        <strong>mdo</strong>
+                        <strong>Admin</strong>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        
+                        <li><a class="dropdown-item" @click="logout()">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -77,6 +91,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex'
+import Constant from '../../../Constant';
 
 const store = useStore();
 const router = useRouter();
@@ -100,6 +115,12 @@ onMounted(() => {
     handleRouteChange();
     watch(() => router.currentRoute.value.fullPath, handleRouteChange);
 });
+
+const logout = () => {
+    store.dispatch('user/' + Constant.GET_USER_LOGOUT).then(() => {
+        router.push({ name: 'home' })
+    })
+}
 
 </script>
 

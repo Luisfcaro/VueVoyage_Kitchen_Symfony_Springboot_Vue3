@@ -58,8 +58,12 @@ class RestaurantController extends AbstractController
                 $data['tables'][] = $table->toArray();
             }
 
-            $data['categories'] = $restaurantRepository->findCategoriesOfIdRestaurant($id);
+            $data['bookings'] = [];
+            foreach ($restaurant->getBookings() as $booking) {
+                $data['bookings'][] = $booking->toArray();
+            }
 
+            $data['categories'] = $restaurantRepository->findCategoriesOfIdRestaurant($id);
 
             return new JsonResponse([
                 "status" => 200,

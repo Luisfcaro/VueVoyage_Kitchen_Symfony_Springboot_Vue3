@@ -28,10 +28,14 @@ class Restaurant
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'restaurant')]
     private Collection $categories;
 
+    #[ORM\OneToMany(targetEntity: Bookings::class, mappedBy: 'restaurant')]
+    private Collection $bookings;
+
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function getIdRest(): ?int
@@ -97,6 +101,33 @@ class Restaurant
         $this->categories->removeElement($category);
         return $this;
     }
+
+    ////////////////////////////////////
+
+    /**
+     * @return Collection<int, Bookings>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Bookings $booking): static
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Bookings $booking): static
+    {
+        $this->bookings->removeElement($booking);
+        return $this;
+    }
+
+    ////////////////////////////////////
 
     public function toArray(): array
     {
