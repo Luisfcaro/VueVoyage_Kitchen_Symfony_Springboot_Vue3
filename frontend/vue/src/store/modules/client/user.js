@@ -1,5 +1,6 @@
 import Constant from "../../../Constant";
 import springbootApiService from "../../../core/http/springboot.api.service";
+import symfonyApiService from "../../../core/http/symfony.api.service";
 
 const state = {
     user: {},
@@ -28,6 +29,10 @@ const actions = {
                         //peticion symfony
                         localStorage.setItem('isAdmin', true)
                         state.isAdmin = true;
+                        symfonyApiService.post('/login', payload)
+                            .then((res) => {
+                                localStorage.setItem('jwt_admin', res.data.Bearer)
+                            })
                     }
                     store.commit(Constant.LOGIN_USER, response.data.user);
                 })
